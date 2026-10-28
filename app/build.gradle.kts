@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace = "com.fzfalcon.webarcade"
-    compileSdk = 37
+    compileSdk = 36
     defaultConfig {
         applicationId = "com.fzfalcon.playtv.legacy"
         minSdk = 23
