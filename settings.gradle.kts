@@ -1,7 +1,7 @@
 pluginManagement {
     repositories {
-        mavenCentral()
         google()
+        mavenCentral()
         gradlePluginPortal()
         maven("https://codeberg.org/api/packages/cefrium/maven")
     }

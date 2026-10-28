@@ -18,6 +18,7 @@ interface PlayBrowserEngine {
 }
 
 object BrowserEngineFactory {
-    const val engineLabel: String = "Android System WebView (legacy compatibility)"
-    fun create(activity: Activity): PlayBrowserEngine = LegacyWebViewEngine(activity)
+    const val engineLabel: String = "Fire TV Legacy WebView Engine"
+    fun create(activity: Activity, onEvent: (LegacyWebViewEngine.EngineEvent) -> Unit): PlayBrowserEngine =
+        LegacyWebViewEngine(activity, onEvent)
 }

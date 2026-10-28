@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>PLAYTV Gaming Launcher</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="launcher-root">
+    <!-- Steam Big Picture Top Bar -->
+    <header class="steam-navbar">
+      <div class="brand">
+        <span class="brand-play">PLAY</span><span class="brand-tv">TV</span>
+      </div>
+      <nav class="nav-links">
+        <button class="nav-item tab-btn active" data-tab="home" tabindex="1">STORE / HOME</button>
+        <button class="nav-item tab-btn" data-tab="library" tabindex="2">MY LIBRARY</button>
+        <button class="nav-item tab-btn" data-tab="settings" tabindex="3">GPU DIAGNOSTICS</button>
+      </nav>
+      <div class="sys-clock" id="clock">12:00</div>
+    </header>
+
+    <!-- Main Viewport -->
+    <main class="content-viewport">
+      <!-- Section: Home -->
+      <section id="tab-home" class="tab-pane active">
+        <!-- Featured Hero Banner -->
+        <div class="hero-showcase" id="hero-banner">
+          <div class="hero-overlay"></div>
+          <div class="hero-details">
+            <span class="badge-featured">FEATURED TITLE</span>
+            <h1 class="hero-title" id="hero-title">Need for Speed: Underground 2</h1>
+            <p class="hero-desc" id="hero-desc">Street racing rebuilt for the web canvas with WebGL hardware acceleration.</p>
+            <div class="hero-tags">
+              <span class="tag-pill" id="hero-compat">WebGL 2.0 / Hardware Ready</span>
+              <span class="tag-pill">Gamepad Support</span>
+              <span class="tag-pill">Fire TV Optimized</span>
+            </div>
+            <div class="hero-actions">
+              <button class="btn-steam primary action-focus" id="btn-hero-play" tabindex="10">▶ PLAY NOW</button>
+              <button class="btn-steam secondary" id="btn-hero-fav" tabindex="11">★ FAVORITE</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Horizontal Game Carousels -->
+        <div class="carousel-section">
+          <h2 class="section-title">ALL GAMES & EXPERIENCES</h2>
+          <div class="carousel-container" id="carousel-games">
+            <!-- Dynamic game cards injected here -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: Library -->
+      <section id="tab-library" class="tab-pane">
+        <h2 class="section-title">FAVORITES & RECENTLY PLAYED</h2>
+        <div class="carousel-container" id="library-games">
+          <!-- Library games injected here -->
+        </div>
+      </section>
+
+      <!-- Section: GPU Diagnostics -->
+      <section id="tab-settings" class="tab-pane">
+        <div class="settings-grid">
+          <div class="settings-card">
+            <h3>System Diagnostics</h3>
+            <div class="diag-row"><span>Device Model:</span><strong id="diag-model">Detecting...</strong></div>
+            <div class="diag-row"><span>Android Version:</span><strong id="diag-api">Detecting...</strong></div>
+            <div class="diag-row"><span>System RAM:</span><strong id="diag-ram">Detecting...</strong></div>
+            <div class="diag-row"><span>CPU Architecture:</span><strong id="diag-cpu">Detecting...</strong></div>
+          </div>
+          <div class="settings-card">
+            <h3>GPU Capabilities</h3>
+            <div class="diag-row"><span>WebGL 1.0:</span><strong id="diag-webgl1">Testing...</strong></div>
+            <div class="diag-row"><span>WebGL 2.0:</span><strong id="diag-webgl2">Testing...</strong></div>
+            <div class="diag-row"><span>WebGPU Native:</span><strong id="diag-webgpu">Testing...</strong></div>
+            <div class="diag-row"><span>GPU Driver:</span><strong id="diag-renderer">Querying...</strong></div>
+          </div>
+        </div>
+        <div style="margin-top: 24px; text-align: center;">
+          <button class="btn-steam secondary" id="btn-refresh-diag" tabindex="20">⟳ RE-RUN CAPABILITY TEST</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
