@@ -1,1 +1,7 @@
-Build status: Source replacement package updated. Catalog validation is part of GitHub Actions. This environment has not compiled the Android APKs, so no successful APK build is claimed. Commit these files and run the Build PLAYTV (Chromium + Legacy) workflow; inspect the artifact and logs before installing.
+PLAYTV v2.0.2 Launcher Recovery Fix
+Changes:
+- Replaced the blocking, non-cancelable WebGPU AlertDialog with automatic return to the launcher.
+- Limited WebGPU error recovery to game pages so launcher diagnostics do not block Home.
+- Prevented repeated compatibility callbacks after recovery begins.
+
+Build status: This source patch has not been compiled in this environment. Run the GitHub Actions Legacy Fire TV APK workflow and test the resulting APK on the Fire TV Stick. This is a launcher recovery fix, not a WebGPU implementation or a guarantee that NFS Underground 2 will run.

@@ -39,19 +39,11 @@ class MainActivity : Activity() {
     private fun handleEngineEvent(event: LegacyWebViewEngine.EngineEvent) {
         when (event) {
             is LegacyWebViewEngine.EngineEvent.WebGpuCompatibilityWarning -> {
-                AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Dialog_Alert)
-                    .setTitle("WebGPU Hardware Boundary")
-                    .setMessage(
-                        "This game requires WebGPU / Vulkan 1.1 compute pipelines.\n\n" +
-                        "Reason: ${event.message}\n\n" +
-                        "Hardware note: MediaTek / PowerVR GPUs on Fire OS 7 (Android 9) do not expose Vulkan 1.1 in Chromium. Returning to the Steam Launcher."
-                    )
-                    .setPositiveButton("Return to Launcher") { d, _ ->
-                        d.dismiss()
-                        browserEngine?.loadUrl("file:///android_asset/steam_launcher/index.html")
-                    }
-                    .setCancelable(false)
-                    .show()
+                // Do not put a non-cancelable native dialog over the launcher.
+                // A game may log a WebGPU error during startup; recover to the launcher
+                // automatically so the user can still access Home and GPU Diagnostics.
+                android.util.Log.w("PLAYTV", "Game WebGPU initialization failed: ${event.message}")
+                browserEngine?.loadUrl("file:///android_asset/steam_launcher/index.html")
             }
             is LegacyWebViewEngine.EngineEvent.Error -> {
                 browserEngine?.loadUrl("file:///android_asset/steam_launcher/index.html")

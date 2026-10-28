@@ -130,8 +130,14 @@ class LegacyWebViewEngine(
             override fun onConsoleMessage(consoleMessage: ConsoleMessage?): Boolean {
                 val msg = consoleMessage?.message() ?: ""
                 Log.d("WebConsole", msg)
-                if (msg.contains("WebGPU", ignoreCase = true) &&
-                    (msg.contains("failed", ignoreCase = true) || msg.contains("could not find", ignoreCase = true))) {
+                if (isPlayingGame &&
+                    msg.contains("WebGPU", ignoreCase = true) &&
+                    (msg.contains("failed", ignoreCase = true) ||
+                     msg.contains("could not find", ignoreCase = true) ||
+                     msg.contains("context provider", ignoreCase = true))) {
+                    // Only game-page errors should trigger recovery. Launcher diagnostics
+                    // and console messages must never block the home screen.
+                    isPlayingGame = false
                     onEngineEvent(EngineEvent.WebGpuCompatibilityWarning(msg))
                 }
                 return true
@@ -266,7 +272,10 @@ class LegacyWebViewEngine(
 
         @JavascriptInterface
         fun onWebGpuFallback(reason: String) {
-            onEngineEvent(EngineEvent.WebGpuCompatibilityWarning(reason))
+            if (isPlayingGame) {
+                isPlayingGame = false
+                onEngineEvent(EngineEvent.WebGpuCompatibilityWarning(reason))
+            }
         }
     }
 
