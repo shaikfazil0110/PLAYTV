@@ -1,10 +1,10 @@
-PLAYTV embedded Chromium test build
+PLAYTV source replacement package
 
-- Replaced old single WebView-only architecture with a two-APK setup.
-- Added `app-chromium`: Cefrium 0.16.0 / embedded Chromium for Android 10+.
-- Kept `app`: legacy WebView build for Android 9 and older supported devices.
-- Reworked UI into TV-focused side rail, large featured game panel, horizontal shelves, bigger cards, persistent favorites/recent, searchable catalogue, and browser/input diagnostics.
-- Added site favicon artwork cards instead of emoji game tiles.
-- Added desktop User-Agent toggle, built-in browser reload/fullscreen controls, browser history handling and lifecycle methods.
-- Added GitHub Actions workflow using JDK25, Gradle 9.7.1 and Android compile SDK 37 to build both APKs.
-- Neither APK has been compiled or tested in this environment.
+- Updated both app variants to read platform and artwork fields from games.json.
+- Added platform-based shelves and platform-aware search.
+- Changed game cards to use cover-style artwork rather than only small favicons.
+- Artwork lookup prefers an explicit catalog art URL, then Open Graph/Twitter image metadata, then a site favicon fallback.
+- Updated both 38-entry game catalogs.
+- Keeps app/ as the legacy Android WebView variant and app-chromium/ as the bundled Chromium variant.
+- WebGPU availability depends on the Chromium engine, Android device/driver, and the target website; artwork/catalog changes do not add WebGPU support.
+- Source has not been compiled or tested in this environment. Use the repository GitHub Actions workflow to build and check both APK variants.

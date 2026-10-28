@@ -39,7 +39,7 @@ class MainActivity : Activity() {
     private val imageCache = ConcurrentHashMap<String, android.graphics.Bitmap>()
     private val prefs by lazy { getSharedPreferences("playtv", MODE_PRIVATE) }
 
-    data class Game(val name: String, val genre: String, val url: String, val note: String) {
+    data class Game(val name: String, val genre: String, val url: String, val note: String, val platform: String = "BROWSER", val art: String = "") {
         val host: String get() = Uri.parse(url).host?.removePrefix("www.") ?: "web game"
         val badge: String get() = name.split(Regex("[^A-Za-z0-9]+" )).filter { it.isNotBlank() }.take(2).joinToString("") { it.take(1) }.uppercase().ifBlank { "TV" }
     }
@@ -74,7 +74,7 @@ class MainActivity : Activity() {
         val arr = JSONArray(raw)
         (0 until arr.length()).map { i ->
             val o = arr.getJSONObject(i)
-            Game(o.getString("name"), o.getString("genre"), o.getString("url"), o.optString("note", "Browser game"))
+            Game(o.getString("name"), o.getString("genre"), o.getString("url"), o.optString("note", "Browser game"), o.optString("platform", "BROWSER"), o.optString("art", ""))
         }
     } catch (_: Exception) { emptyList() }
 
@@ -169,7 +169,7 @@ class MainActivity : Activity() {
             "RECENT" -> all.filter { it.url == prefs.getString("recent_url", "") }
             else -> all
         }
-        if (query.isNotBlank()) games = games.filter { it.name.contains(query, true) || it.genre.contains(query, true) || it.host.contains(query, true) }
+        if (query.isNotBlank()) games = games.filter { it.name.contains(query, true) || it.genre.contains(query, true) || it.platform.contains(query, true) || it.host.contains(query, true) }
 
         if (section == "TEST") return showDiagnostics()
         if (section == "SEARCH") {
@@ -187,9 +187,9 @@ class MainActivity : Activity() {
             val recent = all.filter { it.url == prefs.getString("recent_url", "") }
             if (recent.isNotEmpty()) addShelf(main, "CONTINUE PLAYING", recent)
             addShelf(main, "FEATURED", all.take(6))
-            listOf("Racing", "Shooter", "Arcade", "Puzzle", "Strategy", "Sandbox", "Adventure", "Chess & Board", "Party & Multiplayer", "Game Hubs").forEach { genre ->
-                val items = all.filter { it.genre.equals(genre, true) }
-                if (items.isNotEmpty()) addShelf(main, genre.uppercase(), items)
+            all.map { it.platform }.distinct().forEach { platform ->
+                val items = all.filter { it.platform.equals(platform, true) }
+                if (items.isNotEmpty()) addShelf(main, platform, items)
             }
             main.addView(text("PLAYTV BROWSER ENGINE", 13f, Color.rgb(255, 122, 217), true).apply { setPadding(0, dp(26), 0, dp(6)) })
             main.addView(text("The Chromium build bundles its own engine. Game compatibility still depends on each game's APIs, graphics requirements and website policies. Press TEST in the side menu to view the active build and input hints.", 13f, muted))
@@ -230,12 +230,12 @@ class MainActivity : Activity() {
         games.forEach { game ->
             val card = FrameLayout(this).apply { background = rounded(panel, Color.rgb(38,50,79), 20f); clipToOutline = true }
             val art = FrameLayout(this).apply { background = GradientDrawable(GradientDrawable.Orientation.TL_BR, intArrayOf(Color.rgb(19,38,67), Color.rgb(46,26,68))) }
-            val logo = ImageView(this).apply { scaleType = ImageView.ScaleType.FIT_CENTER; setPadding(dp(24),dp(12),dp(24),dp(12)) }
+            val logo = ImageView(this).apply { scaleType = ImageView.ScaleType.CENTER_CROP; setPadding(0,0,0,0) }
             art.addView(logo, FrameLayout.LayoutParams(-1, -1))
             loadSiteIcon(game, logo)
             val nameOverlay = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL; gravity = Gravity.BOTTOM; setPadding(dp(13),dp(8),dp(13),dp(11)); background = GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, intArrayOf(Color.TRANSPARENT, Color.rgb(10,13,27))) }
             nameOverlay.addView(text(game.name, 14f, white, true).apply { maxLines = 2; ellipsize = android.text.TextUtils.TruncateAt.END })
-            nameOverlay.addView(text(game.genre.uppercase(), 10f, cyan, true).apply { setPadding(0,dp(4),0,0) })
+            nameOverlay.addView(text("${game.genre.uppercase()}  •  ${game.platform}", 10f, cyan, true).apply { maxLines = 1; ellipsize = android.text.TextUtils.TruncateAt.END; setPadding(0,dp(4),0,0) })
             val body = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
             body.addView(art, LinearLayout.LayoutParams(-1, if (large) dp(128) else dp(113)))
             body.addView(nameOverlay, LinearLayout.LayoutParams(-1, if (large) dp(68) else dp(66)))
@@ -252,33 +252,73 @@ class MainActivity : Activity() {
 
     private fun refreshSearchResults(container: LinearLayout, q: String) {
         container.removeAllViews()
-        val results = readGames().filter { it.name.contains(q, true) || it.genre.contains(q, true) || it.host.contains(q, true) }
+        val results = readGames().filter { it.name.contains(q, true) || it.genre.contains(q, true) || it.platform.contains(q, true) || it.host.contains(q, true) }
         container.addView(text("${results.size} RESULTS", 13f, cyan, true).apply { setPadding(0,0,0,dp(12)) })
         addCardRow(container, results, large = true)
         if (results.isEmpty()) container.addView(text("No games found. Try a genre or website name.", 15f, muted))
     }
 
     private fun loadSiteIcon(game: Game, target: ImageView) {
-        val iconUrl = "https://www.google.com/s2/favicons?domain_url=${Uri.encode("https://${game.host}")}&sz=256"
-        val cached = imageCache[iconUrl]
+        // Prefer explicit art, then Open Graph/Twitter share-card artwork.
+        // Some sites publish no public artwork, so a favicon is the final fallback.
+        val cacheKey = game.art.ifBlank { game.url }
+        val cached = imageCache[cacheKey]
         if (cached != null) { target.setImageBitmap(cached); return }
-        thread(name = "playtv-icon") {
+
+        thread(name = "playtv-artwork") {
             var bitmap: android.graphics.Bitmap? = null
             try {
-                val connection = URL(iconUrl).openConnection() as HttpURLConnection
-                connection.connectTimeout = 4500; connection.readTimeout = 4500; connection.instanceFollowRedirects = true
-                connection.setRequestProperty("User-Agent", "PLAYTV/1.1")
-                connection.inputStream.use { bitmap = BitmapFactory.decodeStream(it) }
-                connection.disconnect()
+                var imageUrl = game.art.trim()
+                if (imageUrl.isBlank()) {
+                    val pageConnection = URL(game.url).openConnection() as HttpURLConnection
+                    pageConnection.connectTimeout = 7000
+                    pageConnection.readTimeout = 7000
+                    pageConnection.instanceFollowRedirects = true
+                    pageConnection.setRequestProperty("User-Agent", "Mozilla/5.0 (Linux; Android 13; PLAYTV) AppleWebKit/537.36 Chrome/156.0.0.0 Safari/537.36")
+                    pageConnection.setRequestProperty("Accept", "text/html,application/xhtml+xml")
+                    val html = try {
+                        pageConnection.inputStream.bufferedReader().use { it.readText().take(1500000) }
+                    } finally {
+                        pageConnection.disconnect()
+                    }
+                    fun metaAttr(tag: String, key: String): String? =
+                        Regex("(?is)\\b" + key + "\\s*=\\s*[\"']([^\"']+)[\"']").find(tag)?.groupValues?.get(1)
+                    val tags = Regex("(?is)<meta\\b[^>]*>").findAll(html).map { it.value }
+                    for (tag in tags) {
+                        val field = (metaAttr(tag, "property") ?: metaAttr(tag, "name") ?: "").lowercase()
+                        if (field == "og:image" || field == "twitter:image" || field == "twitter:image:src") {
+                            val candidate = metaAttr(tag, "content")?.replace("&amp;", "&")?.replace("&quot;", "\"")?.trim().orEmpty()
+                            if (candidate.isNotBlank()) {
+                                imageUrl = try { URL(URL(game.url), candidate).toString() } catch (_: Exception) { candidate }
+                                break
+                            }
+                        }
+                    }
+                }
+                if (imageUrl.isBlank()) {
+                    imageUrl = "https://www.google.com/s2/favicons?domain_url=${Uri.encode("https://${game.host}")}&sz=256"
+                }
+                val imageConnection = URL(imageUrl).openConnection() as HttpURLConnection
+                imageConnection.connectTimeout = 7000
+                imageConnection.readTimeout = 9000
+                imageConnection.instanceFollowRedirects = true
+                imageConnection.setRequestProperty("User-Agent", "PLAYTV/1.2")
+                try {
+                    imageConnection.inputStream.use { bitmap = BitmapFactory.decodeStream(it) }
+                } finally {
+                    imageConnection.disconnect()
+                }
             } catch (_: Exception) { }
             if (bitmap != null) {
-                imageCache[iconUrl] = bitmap!!
+                imageCache[cacheKey] = bitmap!!
                 runOnUiThread { if (!isFinishing && target.isAttachedToWindow) target.setImageBitmap(bitmap) }
             } else {
-                runOnUiThread { if (!isFinishing && target.isAttachedToWindow && target.drawable == null) {
-                    target.setImageDrawable(null)
-                    target.setBackground(GradientDrawable(GradientDrawable.Orientation.TL_BR, intArrayOf(Color.rgb(25,41,68), Color.rgb(70,27,81))))
-                } }
+                runOnUiThread {
+                    if (!isFinishing && target.isAttachedToWindow && target.drawable == null) {
+                        target.setImageDrawable(null)
+                        target.setBackground(GradientDrawable(GradientDrawable.Orientation.TL_BR, intArrayOf(Color.rgb(25,41,68), Color.rgb(70,27,81))))
+                    }
+                }
             }
         }
     }
