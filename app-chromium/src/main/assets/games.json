@@ -1,0 +1,254 @@
+[
+  {
+    "name": "Need for Speed: Underground 2",
+    "genre": "Racing",
+    "url": "https://nfsu2.xyz/",
+    "icon": "🏎️",
+    "note": "AAA-style browser project"
+  },
+  {
+    "name": "NFS Most Wanted (2005) Web Port",
+    "genre": "Racing",
+    "url": "https://dezm0n.itch.io/nfs-most-wanted-web-port",
+    "icon": "🚘",
+    "note": "Community web port; availability may change"
+  },
+  {
+    "name": "Quake III Arena — Q3JS",
+    "genre": "Shooter",
+    "url": "https://q3js.com/",
+    "icon": "🎯",
+    "note": "Browser port"
+  },
+  {
+    "name": "Krunker.io",
+    "genre": "Shooter",
+    "url": "https://krunker.io/",
+    "icon": "🔫",
+    "note": "Fast browser FPS"
+  },
+  {
+    "name": "Shell Shockers",
+    "genre": "Shooter",
+    "url": "https://shellshock.io/",
+    "icon": "🥚",
+    "note": "Multiplayer FPS"
+  },
+  {
+    "name": "Minecraft Classic",
+    "genre": "Sandbox",
+    "url": "https://classic.minecraft.net/",
+    "icon": "⛏️",
+    "note": "Classic browser sandbox"
+  },
+  {
+    "name": "Chrono Divide: Red Alert 2",
+    "genre": "Strategy",
+    "url": "https://chronodivide.com/",
+    "icon": "🪖",
+    "note": "Browser-based RTS community project"
+  },
+  {
+    "name": "Agar.io",
+    "genre": "Arcade",
+    "url": "https://agar.io/",
+    "icon": "🟣",
+    "note": "Online arena game"
+  },
+  {
+    "name": "Slither.io",
+    "genre": "Arcade",
+    "url": "https://slither.io/",
+    "icon": "🐍",
+    "note": "Online snake arena"
+  },
+  {
+    "name": "TETR.IO",
+    "genre": "Puzzle",
+    "url": "https://tetr.io/",
+    "icon": "🧩",
+    "note": "Competitive block puzzle"
+  },
+  {
+    "name": "2048",
+    "genre": "Puzzle",
+    "url": "https://play2048.co/",
+    "icon": "🔢",
+    "note": "Lightweight puzzle"
+  },
+  {
+    "name": "Little Alchemy 2",
+    "genre": "Puzzle",
+    "url": "https://littlealchemy2.com/",
+    "icon": "⚗️",
+    "note": "Discovery puzzle"
+  },
+  {
+    "name": "Lichess",
+    "genre": "Chess & Board",
+    "url": "https://lichess.org/",
+    "icon": "♟️",
+    "note": "Free online chess"
+  },
+  {
+    "name": "Chess.com Play",
+    "genre": "Chess & Board",
+    "url": "https://www.chess.com/play",
+    "icon": "♟️",
+    "note": "Chess and puzzles"
+  },
+  {
+    "name": "Gartic Phone",
+    "genre": "Party & Multiplayer",
+    "url": "https://garticphone.com/",
+    "icon": "🎨",
+    "note": "Drawing telephone party game"
+  },
+  {
+    "name": "skribbl.io",
+    "genre": "Party & Multiplayer",
+    "url": "https://skribbl.io/",
+    "icon": "✏️",
+    "note": "Draw and guess"
+  },
+  {
+    "name": "GeoGuessr",
+    "genre": "Adventure",
+    "url": "https://www.geoguessr.com/",
+    "icon": "🌍",
+    "note": "Geography exploration; may require account"
+  },
+  {
+    "name": "Wordle",
+    "genre": "Puzzle",
+    "url": "https://www.nytimes.com/games/wordle/index.html",
+    "icon": "🔤",
+    "note": "Daily word puzzle"
+  },
+  {
+    "name": "CrazyGames",
+    "genre": "Game Hubs",
+    "url": "https://www.crazygames.com/",
+    "icon": "🎮",
+    "note": "Large browser-game catalogue"
+  },
+  {
+    "name": "Poki",
+    "genre": "Game Hubs",
+    "url": "https://poki.com/",
+    "icon": "🕹️",
+    "note": "Casual and multiplayer games"
+  },
+  {
+    "name": "Y8 Games",
+    "genre": "Game Hubs",
+    "url": "https://www.y8.com/",
+    "icon": "👾",
+    "note": "Arcade and browser games"
+  },
+  {
+    "name": "itch.io — HTML5 Games",
+    "genre": "Game Hubs",
+    "url": "https://itch.io/games/html5",
+    "icon": "🧪",
+    "note": "Indie games; filter for HTML5"
+  },
+  {
+    "name": "Newgrounds Games",
+    "genre": "Game Hubs",
+    "url": "https://www.newgrounds.com/games",
+    "icon": "💥",
+    "note": "Indie and classic web games"
+  },
+  {
+    "name": "GamePix",
+    "genre": "Game Hubs",
+    "url": "https://www.gamepix.com/",
+    "icon": "🧊",
+    "note": "HTML5 games portal"
+  },
+  {
+    "name": "Gameflare",
+    "genre": "Game Hubs",
+    "url": "https://www.gameflare.com/",
+    "icon": "🔥",
+    "note": "Browser games catalogue"
+  },
+  {
+    "name": "Miniplay",
+    "genre": "Game Hubs",
+    "url": "https://www.miniplay.com/",
+    "icon": "🧸",
+    "note": "Casual games portal"
+  },
+  {
+    "name": "Armor Games",
+    "genre": "Game Hubs",
+    "url": "https://armorgames.com/",
+    "icon": "🛡️",
+    "note": "Strategy and adventure games"
+  },
+  {
+    "name": "Addicting Games",
+    "genre": "Game Hubs",
+    "url": "https://www.addictinggames.com/",
+    "icon": "⚡",
+    "note": "Arcade and casual games"
+  },
+  {
+    "name": "Coolmath Games",
+    "genre": "Game Hubs",
+    "url": "https://www.coolmathgames.com/",
+    "icon": "🧠",
+    "note": "Puzzle and logic games"
+  },
+  {
+    "name": "Kongregate",
+    "genre": "Game Hubs",
+    "url": "https://www.kongregate.com/",
+    "icon": "🏆",
+    "note": "Web-game portal; some titles may vary"
+  },
+  {
+    "name": "GameDistribution",
+    "genre": "Game Hubs",
+    "url": "https://gamedistribution.com/",
+    "icon": "🌐",
+    "note": "HTML5 game catalogue"
+  },
+  {
+    "name": "Playhop",
+    "genre": "Game Hubs",
+    "url": "https://playhop.com/",
+    "icon": "✨",
+    "note": "Casual browser games"
+  },
+  {
+    "name": "Silvergames",
+    "genre": "Game Hubs",
+    "url": "https://www.silvergames.com/",
+    "icon": "🥈",
+    "note": "Browser games across genres"
+  },
+  {
+    "name": "Miniclip",
+    "genre": "Game Hubs",
+    "url": "https://www.miniclip.com/",
+    "icon": "🎯",
+    "note": "Game publisher and portal"
+  },
+  {
+    "name": "Pokémon Showdown",
+    "genre": "Strategy",
+    "url": "https://pokemonshowdown.com/",
+    "icon": "⚔️",
+    "note": "Online battle simulator"
+  },
+  {
+    "name": "Krunker Hub",
+    "genre": "Shooter",
+    "url": "https://krunker.io/",
+    "icon": "🎮",
+    "note": "Browser FPS hub"
+  }
+]

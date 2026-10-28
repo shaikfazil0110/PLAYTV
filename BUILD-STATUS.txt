@@ -1,0 +1,1 @@
+Build status: Source and GitHub Actions workflow are prepared. This environment does not have Android SDK/Gradle and has no outbound network access, so neither APK has been compiled here. Run the supplied GitHub Actions workflow to obtain signed-by-debug-keystore test APKs. They are debug builds for sideloaded testing, not release builds.
