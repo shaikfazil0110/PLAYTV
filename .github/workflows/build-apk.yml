@@ -33,12 +33,10 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
         with:
-          # The action's default includes the removed SDK package "tools".
-          # Install platform-tools here; install the required platform/build-tools below.
           packages: platform-tools
 
-      - name: Install Android 37 platform
-        run: sdkmanager "platforms;android-37" "build-tools;37.0.0"
+      - name: Install Android 17 platform
+        run: sdkmanager --channel=3 "platforms;android-37.0" "build-tools;37.0.0"
 
       - name: Set up Gradle 9.7.1
         uses: gradle/actions/setup-gradle@v4
