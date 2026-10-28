@@ -1,12 +1,15 @@
-PLAYTV Fire TV GPU compatibility patch — 2026-10-28
+PLAYTV WebGPU diagnostics update
 
-Changes:
-- Removed the X11/Linux desktop User-Agent spoof. PLAYTV now identifies as an Android/Fire TV device in desktop-layout mode too, so game pages should not show Linux-specific Vulkan installation advice.
-- Explicitly requests Android hardware-accelerated rendering for the legacy WebView.
-- The Android manifest already enables application hardware acceleration.
+This change improves diagnosis; it does NOT force-enable WebGPU and does NOT claim to fix game compatibility.
 
-Important limitation:
-This is a compatibility/configuration correction, NOT a claim that WebGPU is fixed. The target Fire TV runs Fire OS 7 / Android 9 and the legacy variant uses the system WebView. WebGPU is not guaranteed to be available there; hardware acceleration and WebGL do not automatically enable WebGPU. If a game still says it cannot find a WebGPU adapter after installing this build, the underlying Fire TV WebView/GPU driver likely does not expose the API required by that game. The next step would be a capability test on the actual Fire Stick and, if unsupported, a WebGL/alternate game build or marking that title incompatible.
+The Legacy launcher now separately reports:
+- whether navigator.gpu is exposed by the installed WebView;
+- whether requestAdapter() returns an adapter;
+- whether requestDevice() succeeds;
+- WebGL 1 / WebGL 2 availability and optional renderer information.
 
-Build verification:
-No Android build was run here. Run the repository GitHub Actions workflow and then test both NFS pages on the physical Fire TV Stick.
+Removed the incorrect assertion that missing navigator.gpu proves the hardware lacks Vulkan 1.1 compute. Android's advertised Vulkan features and installed Vulkan driver do not guarantee WebGPU is exposed or usable by Amazon WebView.
+
+Target device reported by the user: MediaTek MT8695, Fire OS 7 / Android 9 (API 28), Amazon Chromium WebView 138. The user reported Android feature flags for Vulkan compute/level and Vulkan version 0x00400400 (Vulkan 1.3.0), plus /vendor/lib/hw/vulkan.mt8695.so. These are platform-reported signals, not a successful WebGPU test.
+
+Build verification: not run in this environment; run the Legacy GitHub Actions workflow and test the GPU Diagnostics tab on the actual Fire TV.

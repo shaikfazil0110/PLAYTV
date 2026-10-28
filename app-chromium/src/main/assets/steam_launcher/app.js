@@ -96,51 +96,80 @@ function launchGame(game) {
   }
 }
 
-function runHardwareDiagnostics() {
+async function runHardwareDiagnostics() {
+  const byId = (id) => document.getElementById(id);
+  const setText = (id, value) => { const el = byId(id); if (el) el.innerText = value; };
+
+  // Report actual Android device data when the native bridge is available.
   if (window.PlayTVNative && window.PlayTVNative.getDeviceInfo) {
     try {
       const info = JSON.parse(window.PlayTVNative.getDeviceInfo());
-      document.getElementById("diag-model").innerText = info.deviceModel || "Fire TV";
-      document.getElementById("diag-api").innerText = `Android ${info.androidVersion} (API ${info.apiLevel})`;
-      document.getElementById("diag-ram").innerText = `${info.availMemMb} MB free / ${info.totalMemMb} MB total`;
-      document.getElementById("diag-cpu").innerText = info.cpuAbi || "arm64-v8a";
-    } catch (_) {}
-  } else {
-    document.getElementById("diag-model").innerText = navigator.userAgent.includes("AFT") ? "Amazon Fire TV" : "Android TV";
-    document.getElementById("diag-api").innerText = "Android 9 (API 28)";
-    document.getElementById("diag-ram").innerText = "Optimal TV Memory Heap";
-    document.getElementById("diag-cpu").innerText = "32-bit / 64-bit ARM";
-  }
-
-  // WebGL 1.0
-  const c1 = document.createElement("canvas");
-  const gl1 = c1.getContext("webgl");
-  document.getElementById("diag-webgl1").innerText = gl1 ? "Available (Hardware Accelerated)" : "Unavailable";
-
-  // WebGL 2.0
-  const c2 = document.createElement("canvas");
-  const gl2 = c2.getContext("webgl2");
-  document.getElementById("diag-webgl2").innerText = gl2 ? "Available (Shader 3.0 Supported)" : "Unavailable";
-
-  // WebGPU Test
-  if (navigator.gpu) {
-    navigator.gpu.requestAdapter().then(adapter => {
-      document.getElementById("diag-webgpu").innerText = adapter ? "Hardware Adapter Found" : "Not Provided by GPU Driver (Vulkan 1.1 Denylisted)";
-    }).catch(() => {
-      document.getElementById("diag-webgpu").innerText = "Failed to acquire GPU adapter";
-    });
-  } else {
-    document.getElementById("diag-webgpu").innerText = "Disabled in WebView Runtime (Hardware lacks Vulkan 1.1 compute)";
-  }
-
-  // Renderer string
-  if (gl1 || gl2) {
-    const gl = gl2 || gl1;
-    const dbgRender = gl.getExtension("WEBGL_debug_renderer_info");
-    if (dbgRender) {
-      document.getElementById("diag-renderer").innerText = gl.getParameter(dbgRender.UNMASKED_RENDERER_WEBGL);
-    } else {
-      document.getElementById("diag-renderer").innerText = gl.getParameter(gl.RENDERER);
+      setText("diag-model", info.deviceModel || "Android TV device");
+      setText("diag-api", `Android ${info.androidVersion} (API ${info.apiLevel})`);
+      setText("diag-ram", `${info.availMemMb} MB free / ${info.totalMemMb} MB total`);
+      setText("diag-cpu", info.cpuAbi || "Not reported");
+    } catch (e) {
+      setText("diag-model", "Device info unavailable");
     }
+  } else {
+    setText("diag-model", navigator.userAgent.includes("AFT") ? "Amazon Fire TV" : "Android TV / browser");
+    setText("diag-api", "Native Android details unavailable");
+    setText("diag-ram", "Not exposed by this runtime");
+    setText("diag-cpu", "Not exposed by this runtime");
+  }
+
+  // WebGL checks only show that the WebView can create these contexts; they do not prove WebGPU support.
+  let gl1 = null;
+  let gl2 = null;
+  try { gl1 = document.createElement("canvas").getContext("webgl"); } catch (_) {}
+  try { gl2 = document.createElement("canvas").getContext("webgl2"); } catch (_) {}
+  setText("diag-webgl1", gl1 ? "Available" : "Unavailable");
+  setText("diag-webgl2", gl2 ? "Available" : "Unavailable");
+
+  // Probe each WebGPU stage separately. Vulkan feature flags reported by Android do not guarantee
+  // that the WebView exposes WebGPU or that its adapter can create a device.
+  const gpuEl = byId("diag-webgpu");
+  if (gpuEl) gpuEl.innerText = "Testing WebGPU API…";
+  if (!navigator.gpu || typeof navigator.gpu.requestAdapter !== "function") {
+    setText("diag-webgpu", "Unavailable: navigator.gpu is not exposed by this WebView");
+  } else {
+    try {
+      const adapter = await navigator.gpu.requestAdapter();
+      if (!adapter) {
+        setText("diag-webgpu", "API exposed, but requestAdapter() returned no adapter");
+      } else {
+        let adapterDetails = "Adapter found";
+        try {
+          if (adapter.info) {
+            const parts = [adapter.info.vendor, adapter.info.architecture, adapter.info.device, adapter.info.description].filter(Boolean);
+            if (parts.length) adapterDetails += ` (${parts.join(" / ")})`;
+          }
+        } catch (_) {}
+        try {
+          const device = await adapter.requestDevice();
+          if (device) {
+            setText("diag-webgpu", `${adapterDetails}; device creation succeeded`);
+            device.destroy();
+          } else {
+            setText("diag-webgpu", `${adapterDetails}; device creation returned no device`);
+          }
+        } catch (e) {
+          setText("diag-webgpu", `${adapterDetails}; device creation failed: ${e && e.message ? e.message : String(e)}`);
+        }
+      }
+    } catch (e) {
+      setText("diag-webgpu", `requestAdapter() failed: ${e && e.message ? e.message : String(e)}`);
+    }
+  }
+
+  // Renderer string is optional and can be hidden by the browser for privacy/security reasons.
+  const gl = gl2 || gl1;
+  if (gl) {
+    try {
+      const dbg = gl.getExtension("WEBGL_debug_renderer_info");
+      setText("diag-renderer", dbg ? gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER));
+    } catch (_) { setText("diag-renderer", "Renderer details blocked by WebView"); }
+  } else {
+    setText("diag-renderer", "No WebGL context available");
   }
 }

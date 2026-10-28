@@ -16,3 +16,10 @@ Important compatibility notes:
 - The latest provided workflow log showed a Java/Kotlin JVM target mismatch (Java 1.8 vs Kotlin 17) in an earlier source snapshot. The replacement source sets Java source/target compatibility to 17 in both modules; verify the current Actions run after committing these files.
 
 Build status: JSON and source structure checks are performed for this package. This environment does not have a configured Android SDK/Gradle build environment, so this package is not claimed to be a successfully compiled APK. Use the repository's GitHub Actions workflow to build both debug APKs and inspect the resulting logs.
+
+
+2026-10-28 WebGPU diagnostics update
+- Replaced misleading Vulkan/WebGPU assumptions with separate runtime probes.
+- Diagnostics now test navigator.gpu, requestAdapter(), and requestDevice() independently.
+- Applies to Legacy and Chromium source assets.
+- This is a diagnostic/accuracy fix, not a promise that WebGPU games will run on Fire TV.
