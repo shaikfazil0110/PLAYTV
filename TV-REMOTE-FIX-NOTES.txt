@@ -1,0 +1,13 @@
+PLAYTV TV Remote Navigation Fix
+
+Changes:
+- Added explicit D-pad spatial focus navigation for Up/Down/Left/Right in the Legacy and Chromium launcher JavaScript.
+- Added Enter/Space activation for focused game cards.
+- Added a high-contrast focus ring for remote-visible selection.
+- The first focusable top navigation tab is focused automatically when the launcher loads.
+
+Validation performed:
+- Node.js syntax check passed for both app.js files.
+- Android APK build and Fire TV device testing have NOT been performed in this environment.
+
+Build the Legacy APK using the repository's GitHub Actions workflow, then test D-pad navigation on the Fire TV.

@@ -267,3 +267,7 @@ body, html {
   border-bottom: 1px solid rgba(255, 255, 255, 0.04);
   font-size: 13px;
 }
+
+/* High-contrast focus ring for Fire TV remote navigation. */
+button:focus, a:focus, [tabindex]:focus { outline: 3px solid #70c8ff; outline-offset: 4px; }
+.game-card:focus { transform: translateY(-4px) scale(1.025); }

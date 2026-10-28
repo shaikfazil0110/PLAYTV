@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
   setInterval(updateClock, 1000);
 
   setupTabs();
+  setupTvRemoteNavigation();
   loadGames();
   runHardwareDiagnostics();
 
@@ -172,4 +173,73 @@ async function runHardwareDiagnostics() {
   } else {
     setText("diag-renderer", "No WebGL context available");
   }
+}
+
+
+// Fire TV / Android TV remote support. WebView does not always move focus
+// reliably with D-pad keys, so provide explicit spatial navigation.
+function setupTvRemoteNavigation() {
+  const selector = 'button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+  const visibleItems = () => Array.from(document.querySelectorAll(selector)).filter(el => {
+    if (!el.isConnected || el.getAttribute('aria-hidden') === 'true') return false;
+    const pane = el.closest('.tab-pane');
+    if (pane && !pane.classList.contains('active')) return false;
+    const rect = el.getBoundingClientRect();
+    return rect.width > 0 && rect.height > 0 && getComputedStyle(el).visibility !== 'hidden';
+  });
+  const focusFirst = () => {
+    const tabs = visibleItems().filter(el => el.classList.contains('tab-btn'));
+    const target = tabs[0] || visibleItems()[0];
+    if (target) target.focus({ preventScroll: true });
+  };
+  const center = el => {
+    const r = el.getBoundingClientRect();
+    return { x: r.left + r.width / 2, y: r.top + r.height / 2, r };
+  };
+  document.addEventListener('keydown', event => {
+    const key = event.key;
+    const map = { ArrowUp: 'up', ArrowDown: 'down', ArrowLeft: 'left', ArrowRight: 'right' };
+    if (map[key]) {
+      const items = visibleItems();
+      if (!items.length) return;
+      let current = document.activeElement;
+      if (!current || !items.includes(current)) {
+        focusFirst();
+        current = document.activeElement;
+      }
+      const origin = center(current);
+      const direction = map[key];
+      let best = null;
+      let bestScore = Infinity;
+      for (const item of items) {
+        if (item === current) continue;
+        const p = center(item);
+        const dx = p.x - origin.x;
+        const dy = p.y - origin.y;
+        const primary = direction === 'left' ? -dx : direction === 'right' ? dx : direction === 'up' ? -dy : dy;
+        if (primary <= 3) continue;
+        const secondary = (direction === 'left' || direction === 'right') ? Math.abs(dy) : Math.abs(dx);
+        // Prefer items in the same row/column, but allow moving between rows.
+        const score = primary + secondary * 2.2 + (secondary > primary * 1.5 ? 500 : 0);
+        if (score < bestScore) { bestScore = score; best = item; }
+      }
+      if (best) {
+        event.preventDefault();
+        event.stopPropagation();
+        best.focus({ preventScroll: true });
+        best.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
+      }
+      return;
+    }
+    if (key === 'Enter' || key === ' ') {
+      const current = document.activeElement;
+      if (current && current.classList.contains('game-card')) {
+        event.preventDefault();
+        current.click();
+      }
+    }
+  }, true);
+  // Ensure the first D-pad press starts from a known focus target.
+  window.addEventListener('load', () => setTimeout(focusFirst, 250), { once: true });
+  setTimeout(focusFirst, 400);
 }
