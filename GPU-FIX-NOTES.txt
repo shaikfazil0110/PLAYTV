@@ -1,0 +1,12 @@
+PLAYTV Fire TV GPU compatibility patch — 2026-10-28
+
+Changes:
+- Removed the X11/Linux desktop User-Agent spoof. PLAYTV now identifies as an Android/Fire TV device in desktop-layout mode too, so game pages should not show Linux-specific Vulkan installation advice.
+- Explicitly requests Android hardware-accelerated rendering for the legacy WebView.
+- The Android manifest already enables application hardware acceleration.
+
+Important limitation:
+This is a compatibility/configuration correction, NOT a claim that WebGPU is fixed. The target Fire TV runs Fire OS 7 / Android 9 and the legacy variant uses the system WebView. WebGPU is not guaranteed to be available there; hardware acceleration and WebGL do not automatically enable WebGPU. If a game still says it cannot find a WebGPU adapter after installing this build, the underlying Fire TV WebView/GPU driver likely does not expose the API required by that game. The next step would be a capability test on the actual Fire Stick and, if unsupported, a WebGL/alternate game build or marking that title incompatible.
+
+Build verification:
+No Android build was run here. Run the repository GitHub Actions workflow and then test both NFS pages on the physical Fire TV Stick.

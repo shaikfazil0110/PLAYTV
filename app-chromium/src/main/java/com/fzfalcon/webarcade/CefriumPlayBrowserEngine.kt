@@ -4,7 +4,7 @@ import android.app.Activity
 import android.view.View
 import com.cefrium.CefriumBrowser
 
-private const val DESKTOP_UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36"
+private const val DESKTOP_UA = "Mozilla/5.0 (Linux; Android 9; AFTMM) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36"
 
 class CefriumPlayBrowserEngine(activity: Activity) : PlayBrowserEngine {
     private val browser: CefriumBrowser = CefriumBrowser.createWithSurface(activity)
@@ -27,7 +27,9 @@ class CefriumPlayBrowserEngine(activity: Activity) : PlayBrowserEngine {
 
     override fun loadUrl(url: String) { browser.setFocus(true); browser.loadUrl(url) }
     override fun setDesktopMode(enabled: Boolean) {
-        browser.setUserAgentOverride(if (enabled) DESKTOP_UA else "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Mobile Safari/537.36")
+        // Use an Android UA in both modes so sites do not mis-detect Fire TV as
+        // Linux desktop and recommend an unavailable Linux Vulkan package.
+        browser.setUserAgentOverride(if (enabled) DESKTOP_UA else "Mozilla/5.0 (Linux; Android 9; AFTMM) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Mobile Safari/537.36")
     }
     override fun canGoBack(): Boolean = browser.canGoBack()
     override fun goBack() { browser.goBack() }

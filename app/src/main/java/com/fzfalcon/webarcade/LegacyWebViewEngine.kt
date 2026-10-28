@@ -9,7 +9,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.FrameLayout
 
-private const val DESKTOP_UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36"
+private const val DESKTOP_UA = "Mozilla/5.0 (Linux; Android 9; AFTMM) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36"
 
 class LegacyWebViewEngine(private val activity: Activity) : PlayBrowserEngine {
     private val container: FrameLayout = FrameLayout(activity).apply {
@@ -36,6 +36,9 @@ class LegacyWebViewEngine(private val activity: Activity) : PlayBrowserEngine {
     private fun createWebView(): WebView {
         val browser: WebView = WebView(activity)
         browser.setBackgroundColor(Color.BLACK)
+        // Explicitly request the hardware-accelerated view path on Fire OS.
+        // This does not add WebGPU if the system WebView/driver lacks it.
+        browser.setLayerType(View.LAYER_TYPE_HARDWARE, null)
         browser.isFocusable = true
         browser.isFocusableInTouchMode = true
 
@@ -94,6 +97,8 @@ class LegacyWebViewEngine(private val activity: Activity) : PlayBrowserEngine {
     }
 
     override fun setDesktopMode(enabled: Boolean) {
+        // Keep an Android UA even in desktop-layout mode. A Linux UA made some
+        // game pages show Linux/Vulkan driver instructions on Fire TV.
         webView.settings.userAgentString = if (enabled) DESKTOP_UA else defaultUserAgent
         webView.settings.useWideViewPort = true
         webView.settings.loadWithOverviewMode = true
