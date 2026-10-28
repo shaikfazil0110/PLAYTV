@@ -5,7 +5,7 @@
     "url": "https://nfsu2.xyz/",
     "icon": "🏎️",
     "note": "AAA-style browser project",
-    "platform": "BROWSER PORTS",
+    "platform": "PC GAME PORTS",
     "art": ""
   },
   {
@@ -14,7 +14,7 @@
     "url": "https://dezm0n.itch.io/nfs-most-wanted-web-port",
     "icon": "🚘",
     "note": "Community web port; availability may change",
-    "platform": "BROWSER PORTS",
+    "platform": "PC GAME PORTS",
     "art": ""
   },
   {
@@ -23,7 +23,7 @@
     "url": "https://q3js.com/",
     "icon": "🎯",
     "note": "Browser port",
-    "platform": "BROWSER PORTS",
+    "platform": "PC GAME PORTS",
     "art": ""
   },
   {
@@ -59,7 +59,7 @@
     "url": "https://chronodivide.com/",
     "icon": "🪖",
     "note": "Browser-based RTS community project",
-    "platform": "BROWSER PORTS",
+    "platform": "PC GAME PORTS",
     "art": ""
   },
   {
@@ -315,15 +315,6 @@
     "art": ""
   },
   {
-    "name": "Krunker Hub",
-    "genre": "Shooter",
-    "url": "https://krunker.io/",
-    "icon": "🎮",
-    "note": "Browser FPS hub",
-    "platform": "BROWSER FPS",
-    "art": ""
-  },
-  {
     "name": "DOS.Zone — Retro Games",
     "genre": "Game Hubs",
     "url": "https://dos.zone/",
@@ -339,6 +330,195 @@
     "icon": "💾",
     "note": "DOSBox-based browser gaming technology and demos",
     "platform": "RETRO / DOS HUBS",
+    "art": ""
+  },
+  {
+    "name": "OpenLara — Tomb Raider Engine",
+    "genre": "Action / Adventure",
+    "url": "https://xproger.info/projects/OpenLara/",
+    "icon": "🗿",
+    "note": "Open-source Tomb Raider engine demo; content availability depends on the demo or game data supplied",
+    "platform": "PS1 / PC WEB PORTS",
+    "art": ""
+  },
+  {
+    "name": "QuakeJS",
+    "genre": "FPS",
+    "url": "https://www.quakejs.com/",
+    "icon": "🎯",
+    "note": "Community browser port; server and browser compatibility may vary",
+    "platform": "PC GAME PORTS",
+    "art": ""
+  },
+  {
+    "name": "Internet Archive — Classic Games",
+    "genre": "Retro",
+    "url": "https://archive.org/details/softwarelibrary_msdos_games",
+    "icon": "🕹️",
+    "note": "Browser emulation for supported archived software; availability varies",
+    "platform": "RETRO / DOS",
+    "art": ""
+  },
+  {
+    "name": "itch.io — Racing Games",
+    "genre": "Racing",
+    "url": "https://itch.io/games/tag-racing/html5",
+    "icon": "🏁",
+    "note": "HTML5 racing games; individual game controls and compatibility vary",
+    "platform": "HTML5 GAME HUBS",
+    "art": ""
+  },
+  {
+    "name": "itch.io — Platform Games",
+    "genre": "Platformer",
+    "url": "https://itch.io/games/tag-platformer/html5",
+    "icon": "🧗",
+    "note": "HTML5 platform games directory",
+    "platform": "HTML5 GAME HUBS",
+    "art": ""
+  },
+  {
+    "name": "itch.io — Action Games",
+    "genre": "Action",
+    "url": "https://itch.io/games/tag-action/html5",
+    "icon": "⚔️",
+    "note": "HTML5 action games directory",
+    "platform": "HTML5 GAME HUBS",
+    "art": ""
+  },
+  {
+    "name": "itch.io — Multiplayer Games",
+    "genre": "Multiplayer",
+    "url": "https://itch.io/games/tag-multiplayer/html5",
+    "icon": "👾",
+    "note": "HTML5 multiplayer games directory",
+    "platform": "HTML5 GAME HUBS",
+    "art": ""
+  },
+  {
+    "name": "itch.io — 3D Games",
+    "genre": "3D / Action",
+    "url": "https://itch.io/games/tag-3d/html5",
+    "icon": "🧊",
+    "note": "HTML5 3D game directory; device requirements vary",
+    "platform": "HTML5 GAME HUBS",
+    "art": ""
+  },
+  {
+    "name": "CrazyGames — Racing",
+    "genre": "Racing",
+    "url": "https://www.crazygames.com/t/racing",
+    "icon": "🏎️",
+    "note": "Racing game directory; some games may require touch or mouse",
+    "platform": "HTML5 GAME HUBS",
+    "art": ""
+  },
+  {
+    "name": "CrazyGames — Action",
+    "genre": "Action",
+    "url": "https://www.crazygames.com/t/action",
+    "icon": "💥",
+    "note": "Action game directory",
+    "platform": "HTML5 GAME HUBS",
+    "art": ""
+  },
+  {
+    "name": "Poki — Racing",
+    "genre": "Racing",
+    "url": "https://poki.com/en/racing",
+    "icon": "🏎️",
+    "note": "Racing game directory",
+    "platform": "HTML5 GAME HUBS",
+    "art": ""
+  },
+  {
+    "name": "Poki — Adventure",
+    "genre": "Adventure",
+    "url": "https://poki.com/en/adventure",
+    "icon": "🧭",
+    "note": "Adventure game directory",
+    "platform": "HTML5 GAME HUBS",
+    "art": ""
+  },
+  {
+    "name": "GamePix — Racing",
+    "genre": "Racing",
+    "url": "https://www.gamepix.com/play?category=racing",
+    "icon": "🚗",
+    "note": "Browser game portal; category routing may vary",
+    "platform": "HTML5 GAME HUBS",
+    "art": ""
+  },
+  {
+    "name": "Miniplay — Action Games",
+    "genre": "Action",
+    "url": "https://www.miniplay.com/games/action",
+    "icon": "⚔️",
+    "note": "Browser game directory",
+    "platform": "HTML5 GAME HUBS",
+    "art": ""
+  },
+  {
+    "name": "Y8 — Racing Games",
+    "genre": "Racing",
+    "url": "https://www.y8.com/categories/racing",
+    "icon": "🏁",
+    "note": "Browser game directory",
+    "platform": "HTML5 GAME HUBS",
+    "art": ""
+  },
+  {
+    "name": "Armor Games — Strategy",
+    "genre": "Strategy",
+    "url": "https://armorgames.com/category/strategy-games",
+    "icon": "♟️",
+    "note": "Strategy game directory",
+    "platform": "HTML5 GAME HUBS",
+    "art": ""
+  },
+  {
+    "name": "Coolmath Games — Skill",
+    "genre": "Skill / Arcade",
+    "url": "https://www.coolmathgames.com/1-skill-games",
+    "icon": "🎮",
+    "note": "Skill and arcade game directory",
+    "platform": "HTML5 GAME HUBS",
+    "art": ""
+  },
+  {
+    "name": "Board Game Arena",
+    "genre": "Board / Multiplayer",
+    "url": "https://boardgamearena.com/",
+    "icon": "🎲",
+    "note": "Online board games; account may be required for some features",
+    "platform": "PUZZLE & BOARD",
+    "art": ""
+  },
+  {
+    "name": "Chess.org — Browser Chess",
+    "genre": "Board / Strategy",
+    "url": "https://www.chess.org/",
+    "icon": "♟️",
+    "note": "Browser chess platform",
+    "platform": "PUZZLE & BOARD",
+    "art": ""
+  },
+  {
+    "name": "Neal.fun — Interactive Games",
+    "genre": "Casual / Interactive",
+    "url": "https://neal.fun/",
+    "icon": "✨",
+    "note": "Collection of interactive browser experiences",
+    "platform": "ARCADE & CASUAL",
+    "art": ""
+  },
+  {
+    "name": "Word Games — Sporcle",
+    "genre": "Trivia",
+    "url": "https://www.sporcle.com/",
+    "icon": "🧠",
+    "note": "Trivia and quiz games; some content uses mouse/touch",
+    "platform": "PUZZLE & BOARD",
     "art": ""
   }
 ]

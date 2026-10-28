@@ -204,17 +204,24 @@ class MainActivity : Activity() {
     private fun buildHero(game: Game?): View {
         val hero = FrameLayout(this).apply {
             background = GradientDrawable(GradientDrawable.Orientation.TL_BR, intArrayOf(Color.rgb(18, 25, 60), Color.rgb(68, 25, 89), Color.rgb(9, 24, 40))).apply { cornerRadius = dp(26).toFloat() }
+            clipToOutline = true
             setPadding(dp(26), dp(20), dp(26), dp(20))
+            isFocusable = true
         }
-        val visual = ImageView(this).apply { scaleType = ImageView.ScaleType.CENTER_CROP; alpha = .18f }
+        val visual = ImageView(this).apply { scaleType = ImageView.ScaleType.CENTER_CROP; alpha = .48f }
         if (game != null) loadSiteIcon(game, visual)
-        hero.addView(visual, FrameLayout.LayoutParams(dp(240), -1, Gravity.RIGHT))
-        val overlay = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL; gravity = Gravity.CENTER_VERTICAL }
-        overlay.addView(text("FEATURED • BROWSER RACING", 12f, cyan, true))
-        overlay.addView(text("NEED FOR SPEED:\nUNDERGROUND 2", 29f, white, true).apply { setPadding(0, dp(9), 0, dp(5)) })
-        overlay.addView(text("Launch a browser game in your own PLAYTV browser engine.", 15f, Color.rgb(204,214,236)))
+        hero.addView(visual, FrameLayout.LayoutParams(-1, -1))
+        val shade = View(this).apply {
+            background = GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT,
+                intArrayOf(Color.rgb(8, 10, 24), Color.argb(225, 8, 10, 24), Color.argb(35, 8, 10, 24)))
+        }
+        hero.addView(shade, FrameLayout.LayoutParams(-1, -1))
+        val overlay = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL; gravity = Gravity.CENTER_VERTICAL; setPadding(dp(4),0,dp(4),0) }
+        overlay.addView(text("PLAYTV  •  FEATURED GAME", 12f, cyan, true))
+        overlay.addView(text(game?.name ?: "YOUR GAMING UNIVERSE", 29f, white, true).apply { setPadding(0, dp(9), 0, dp(5)); maxLines = 2 })
+        overlay.addView(text(game?.note ?: "Explore browser games and community ports.", 14f, Color.rgb(204,214,236)).apply { maxLines = 2 })
         overlay.addView(tvButton("▶   PLAY NOW", true) { if (game != null) launchGame(game) }.apply { setPadding(dp(24),dp(12),dp(24),dp(12)) }, LinearLayout.LayoutParams(dp(172), dp(50)).apply { topMargin = dp(18) })
-        hero.addView(overlay, FrameLayout.LayoutParams(-1, -1, Gravity.LEFT))
+        hero.addView(overlay, FrameLayout.LayoutParams(dp(560), -1, Gravity.LEFT))
         return hero
     }
 
@@ -228,26 +235,44 @@ class MainActivity : Activity() {
         val horizontal = HorizontalScrollView(this).apply { isHorizontalScrollBarEnabled = false; clipToPadding = false; isFillViewport = false }
         val rail = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL; gravity = Gravity.TOP }
         games.forEach { game ->
-            val card = FrameLayout(this).apply { background = rounded(panel, Color.rgb(38,50,79), 20f); clipToOutline = true }
-            val art = FrameLayout(this).apply { background = GradientDrawable(GradientDrawable.Orientation.TL_BR, intArrayOf(Color.rgb(19,38,67), Color.rgb(46,26,68))) }
-            val logo = ImageView(this).apply { scaleType = ImageView.ScaleType.CENTER_CROP; setPadding(0,0,0,0) }
-            art.addView(logo, FrameLayout.LayoutParams(-1, -1))
-            loadSiteIcon(game, logo)
-            val nameOverlay = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL; gravity = Gravity.BOTTOM; setPadding(dp(13),dp(8),dp(13),dp(11)); background = GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, intArrayOf(Color.TRANSPARENT, Color.rgb(10,13,27))) }
-            nameOverlay.addView(text(game.name, 14f, white, true).apply { maxLines = 2; ellipsize = android.text.TextUtils.TruncateAt.END })
-            nameOverlay.addView(text("${game.genre.uppercase()}  •  ${game.platform}", 10f, cyan, true).apply { maxLines = 1; ellipsize = android.text.TextUtils.TruncateAt.END; setPadding(0,dp(4),0,0) })
-            val body = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
-            body.addView(art, LinearLayout.LayoutParams(-1, if (large) dp(128) else dp(113)))
-            body.addView(nameOverlay, LinearLayout.LayoutParams(-1, if (large) dp(68) else dp(66)))
-            card.addView(body)
-            focusable(card) { focused -> card.background = rounded(if (focused) Color.rgb(30,47,76) else panel, if (focused) cyan else Color.rgb(38,50,79), 20f) }
-            card.contentDescription = "${game.name}, ${game.genre}. Press select to play. Long press to save."
+            val card = FrameLayout(this).apply {
+                background = rounded(panel, Color.rgb(38,50,79), 20f)
+                clipToOutline = true
+                isFocusable = true
+                isFocusableInTouchMode = true
+                transitionName = "game-${game.badge}"
+            }
+            val fallback = GradientDrawable(GradientDrawable.Orientation.TL_BR, intArrayOf(Color.rgb(19,38,67), Color.rgb(46,26,68)))
+            val art = ImageView(this).apply { scaleType = ImageView.ScaleType.CENTER_CROP; background = fallback; contentDescription = "${game.name} cover artwork" }
+            loadSiteIcon(game, art)
+            card.addView(art, FrameLayout.LayoutParams(-1, -1))
+            val shade = View(this).apply {
+                background = GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
+                    intArrayOf(Color.TRANSPARENT, Color.argb(95, 5, 8, 18), Color.rgb(5, 8, 18)))
+            }
+            card.addView(shade, FrameLayout.LayoutParams(-1, -1))
+            val info = LinearLayout(this).apply {
+                orientation = LinearLayout.VERTICAL
+                gravity = Gravity.BOTTOM
+                setPadding(dp(14), dp(10), dp(14), dp(13))
+            }
+            info.addView(text(game.name, 15f, white, true).apply { maxLines = 2; ellipsize = android.text.TextUtils.TruncateAt.END })
+            info.addView(text("${game.genre.uppercase()}  •  ${game.platform}", 10f, cyan, true).apply {
+                maxLines = 2; ellipsize = android.text.TextUtils.TruncateAt.END; setPadding(0,dp(5),0,0)
+            })
+            card.addView(info, FrameLayout.LayoutParams(-1, if (large) dp(104) else dp(96), Gravity.BOTTOM))
+            focusable(card) { focused ->
+                card.animate().scaleX(if (focused) 1.045f else 1f).scaleY(if (focused) 1.045f else 1f).setDuration(130).start()
+                card.background = rounded(if (focused) Color.rgb(30,47,76) else panel, if (focused) cyan else Color.rgb(38,50,79), 20f)
+                card.elevation = if (focused) dp(12).toFloat() else 0f
+            }
+            card.contentDescription = "${game.name}, ${game.genre}, ${game.platform}. Press select to play. Long press to save."
             card.setOnClickListener { launchGame(game) }
             card.setOnLongClickListener { toggleFavorite(game); Toast.makeText(this, if (isFavorite(game)) "Saved to Favorites" else "Removed from Favorites", Toast.LENGTH_SHORT).show(); true }
-            val lp = LinearLayout.LayoutParams(if (large) dp(270) else dp(226), if (large) dp(196) else dp(179)); lp.rightMargin = dp(16); rail.addView(card, lp)
+            val lp = LinearLayout.LayoutParams(if (large) dp(270) else dp(226), if (large) dp(170) else dp(156)); lp.rightMargin = dp(16); rail.addView(card, lp)
         }
         horizontal.addView(rail)
-        parent.addView(horizontal, LinearLayout.LayoutParams(-1, if (large) dp(208) else dp(190)))
+        parent.addView(horizontal, LinearLayout.LayoutParams(-1, if (large) dp(188) else dp(174)))
     }
 
     private fun refreshSearchResults(container: LinearLayout, q: String) {

@@ -36,12 +36,26 @@ jobs:
           packages: platform-tools
 
       - name: Install Android 17 platform
-        run: sdkmanager --channel=3 "platforms;android-37.0" "build-tools;37.0.0"
+        run: sdkmanager --channel=3 "platforms;android-37" "build-tools;37.0.0"
 
       - name: Set up Gradle 9.7.1
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '9.7.1'
+
+      - name: Verify game catalog JSON
+        run: |
+          python3 - <<'PYJSON'
+          import json
+          for path in ('app/src/main/assets/games.json', 'app-chromium/src/main/assets/games.json'):
+              games = json.load(open(path, encoding='utf-8'))
+              assert games, f'{path} is empty'
+              urls = [g['url'] for g in games]
+              assert len(urls) == len(set(urls)), f'{path} contains duplicate game URLs'
+              for game in games:
+                  assert all(k in game for k in ('name', 'genre', 'url', 'platform')), game
+              print(f'{path}: {len(games)} entries OK')
+          PYJSON
 
       - name: Build both variants
         run: gradle --no-daemon :app:assembleDebug :app-chromium:assembleDebug

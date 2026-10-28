@@ -1,10 +1,18 @@
-PLAYTV source replacement package
+PLAYTV full-source update — October 28, 2026
 
-- Updated both app variants to read platform and artwork fields from games.json.
-- Added platform-based shelves and platform-aware search.
-- Changed game cards to use cover-style artwork rather than only small favicons.
-- Artwork lookup prefers an explicit catalog art URL, then Open Graph/Twitter image metadata, then a site favicon fallback.
-- Updated both 38-entry game catalogs.
-- Keeps app/ as the legacy Android WebView variant and app-chromium/ as the bundled Chromium variant.
-- WebGPU availability depends on the Chromium engine, Android device/driver, and the target website; artwork/catalog changes do not add WebGPU support.
-- Source has not been compiled or tested in this environment. Use the repository GitHub Actions workflow to build and check both APK variants.
+Implemented in both app variants:
+- Expanded the catalog from 38 to 58 entries, including more direct browser games and game-directory shelves.
+- Added PC GAME PORTS and PS1 / PC WEB PORTS labels where appropriate. These labels describe the source/platform lineage; they do not claim that PS2/PS3 games run in a browser or that emulation is built in.
+- Kept the catalog in sync across Legacy WebView and bundled Chromium variants.
+- Reworked game cards into cover-art tiles with a bottom gradient, readable overlaid title/genre/platform, focus scaling, and TV remote-friendly selection.
+- Reworked the featured hero to use the actual selected game’s title, note, and artwork instead of always displaying Need for Speed Underground 2.
+- Artwork lookup prefers explicit catalog art, then Open Graph/Twitter share artwork, then favicon fallback; a branded gradient remains if image fetching fails.
+- Added a GitHub Actions catalog JSON validation step before Android builds.
+
+Important compatibility notes:
+- This app lists browser games and community web ports. It does not contain PS1/PS2/PS3 emulators or copyrighted game ROM/ISO files.
+- A site being listed does not guarantee that it works on every Android TV device. Mouse/touch assumptions, login requirements, WebGL/WebGPU, DRM, and site policies may affect compatibility.
+- NFS Underground 2 and NFS Most Wanted web projects are community/browser projects and may change independently of PLAYTV. The catalog cannot fix a website's missing WebGPU or GPU driver requirements.
+- The latest provided workflow log showed a Java/Kotlin JVM target mismatch (Java 1.8 vs Kotlin 17) in an earlier source snapshot. The replacement source sets Java source/target compatibility to 17 in both modules; verify the current Actions run after committing these files.
+
+Build status: JSON and source structure checks are performed for this package. This environment does not have a configured Android SDK/Gradle build environment, so this package is not claimed to be a successfully compiled APK. Use the repository's GitHub Actions workflow to build both debug APKs and inspect the resulting logs.
