@@ -39,13 +39,21 @@ class MainActivity : Activity() {
     private fun handleEngineEvent(event: LegacyWebViewEngine.EngineEvent) {
         when (event) {
             is LegacyWebViewEngine.EngineEvent.WebGpuCompatibilityWarning -> {
-                // Do not put a non-cancelable native dialog over the launcher.
-                // A game may log a WebGPU error during startup; recover to the launcher
-                // automatically so the user can still access Home and GPU Diagnostics.
-                android.util.Log.w("PLAYTV", "Game WebGPU initialization failed: ${event.message}")
-                browserEngine?.loadUrl("file:///android_asset/steam_launcher/index.html")
+                // Non-blocking hint only. Never navigate away: many games probe WebGPU,
+                // log an error and then continue on WebGL.
+                android.util.Log.w("PLAYTV", "Game WebGPU message: ${event.message}")
+                android.widget.Toast.makeText(
+                    this,
+                    "This game reported a WebGPU problem. If it does not start, press Back to return Home.",
+                    android.widget.Toast.LENGTH_LONG
+                ).show()
             }
             is LegacyWebViewEngine.EngineEvent.Error -> {
+                android.widget.Toast.makeText(
+                    this,
+                    "Could not load the game (${event.description}). Check the network connection.",
+                    android.widget.Toast.LENGTH_LONG
+                ).show()
                 browserEngine?.loadUrl("file:///android_asset/steam_launcher/index.html")
             }
             else -> {}

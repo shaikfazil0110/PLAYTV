@@ -38,6 +38,7 @@ class LegacyWebViewEngine(
     private var fullScreenListener: ((Boolean) -> Unit)? = null
     private var isPlayingGame: Boolean = false
     private var currentGameTitle: String = ""
+    private var webGpuWarned: Boolean = false
 
     val webView: WebView = createWebView()
     private val defaultUserAgent: String = webView.settings.userAgentString
@@ -53,7 +54,6 @@ class LegacyWebViewEngine(
     private fun createWebView(): WebView {
         val browser = WebView(activity)
         browser.setBackgroundColor(Color.parseColor("#090B0E"))
-        browser.setLayerType(View.LAYER_TYPE_HARDWARE, null)
         browser.isFocusable = true
         browser.isFocusableInTouchMode = true
 
@@ -69,18 +69,32 @@ class LegacyWebViewEngine(
         s.allowFileAccess = true
         s.allowContentAccess = true
         s.cacheMode = WebSettings.LOAD_DEFAULT
+        s.mixedContentMode = WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE
+
+        // Game portals (CrazyGames, Poki, itch.io...) embed games in cross-site iframes that
+        // need third-party cookies / storage, which WebView blocks by default.
+        CookieManager.getInstance().apply {
+            setAcceptCookie(true)
+            setAcceptThirdPartyCookies(browser, true)
+        }
 
         browser.addJavascriptInterface(PlayTVJsBridge(), "PlayTVNative")
 
         browser.webViewClient = object : WebViewClient() {
             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
                 super.onPageStarted(view, url, favicon)
+                webGpuWarned = false
+                if (url != null) isPlayingGame = !isLauncherUrl(url)
                 url?.let { onEngineEvent(EngineEvent.PageStarted(it)) }
             }
 
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
-                injectCompatibilityPolyfills(browser)
+                // Drop history once the launcher is showing so Back on Home exits the app
+                // instead of re-opening the last game.
+                if (url != null && isLauncherUrl(url)) view?.clearHistory()
+                // Give the page keyboard / D-pad focus so games receive key events.
+                view?.requestFocus()
                 url?.let { onEngineEvent(EngineEvent.PageFinished(it)) }
             }
 
@@ -91,6 +105,9 @@ class LegacyWebViewEngine(
                 } else "Resource Error"
                 val url = request?.url?.toString() ?: ""
                 Log.w(TAG, "WebView error: $desc at $url")
+                if (request?.isForMainFrame == true && !isLauncherUrl(url)) {
+                    onEngineEvent(EngineEvent.Error(error?.errorCode ?: -1, desc, url))
+                }
             }
 
             override fun onRenderProcessGone(view: WebView?, detail: RenderProcessGoneDetail?): Boolean {
@@ -130,14 +147,14 @@ class LegacyWebViewEngine(
             override fun onConsoleMessage(consoleMessage: ConsoleMessage?): Boolean {
                 val msg = consoleMessage?.message() ?: ""
                 Log.d("WebConsole", msg)
-                if (isPlayingGame &&
+                if (isPlayingGame && !webGpuWarned &&
                     msg.contains("WebGPU", ignoreCase = true) &&
                     (msg.contains("failed", ignoreCase = true) ||
                      msg.contains("could not find", ignoreCase = true) ||
                      msg.contains("context provider", ignoreCase = true))) {
-                    // Only game-page errors should trigger recovery. Launcher diagnostics
-                    // and console messages must never block the home screen.
-                    isPlayingGame = false
+                    // Informational only. Many games probe WebGPU, log a failure and then
+                    // fall back to WebGL, so we must NOT leave the game page here.
+                    webGpuWarned = true
                     onEngineEvent(EngineEvent.WebGpuCompatibilityWarning(msg))
                 }
                 return true
@@ -147,62 +164,51 @@ class LegacyWebViewEngine(
         return browser
     }
 
-    private fun injectCompatibilityPolyfills(target: WebView) {
-        val shim = """
-            (function() {
-                if (!navigator.gpu) {
-                    console.warn('[PLAYTV] navigator.gpu not present in system webview.');
-                    return;
-                }
-                const orig = navigator.gpu.requestAdapter.bind(navigator.gpu);
-                navigator.gpu.requestAdapter = async function(opts) {
-                    try {
-                        const a = await orig(opts);
-                        if (!a && window.PlayTVNative && window.PlayTVNative.onWebGpuFallback) {
-                            window.PlayTVNative.onWebGpuFallback('Adapter unavailable from GPU driver');
-                        }
-                        return a;
-                    } catch(err) {
-                        if (window.PlayTVNative && window.PlayTVNative.onWebGpuFallback) {
-                            window.PlayTVNative.onWebGpuFallback(err.message || 'GPU Adapter failure');
-                        }
-                        throw err;
-                    }
-                };
-            })();
-        """.trimIndent()
-        target.evaluateJavascript(shim, null)
-    }
-
     private fun matchParentLayoutParams(): FrameLayout.LayoutParams =
         FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+
+    private fun isLauncherUrl(url: String): Boolean = url.contains("steam_launcher/index.html")
+
+    /**
+     * The stock WebView user agent contains "; wv", "Version/4.0" and "Mobile". Many game
+     * sites treat that as an embedded/mobile browser and refuse to start or serve a touch-only
+     * build. Present a regular Android Chrome UA to games, keep the stock one for the launcher.
+     */
+    private fun gameUserAgent(): String = defaultUserAgent
+        .replace("; wv", "")
+        .replace(Regex("\\sVersion/[0-9.]+"), "")
+        .replace(" Mobile Safari", " Safari")
 
     fun loadLauncher() {
         isPlayingGame = false
         currentGameTitle = ""
+        webView.settings.userAgentString = defaultUserAgent
         webView.loadUrl("file:///android_asset/steam_launcher/index.html")
     }
 
-    override fun loadUrl(url: String) {
-        isPlayingGame = !url.contains("steam_launcher/index.html")
+    private fun openGame(url: String, title: String = "") {
+        isPlayingGame = true
+        currentGameTitle = title
+        webGpuWarned = false
+        webView.settings.userAgentString = gameUserAgent()
         webView.loadUrl(url)
     }
 
+    override fun loadUrl(url: String) {
+        if (isLauncherUrl(url)) loadLauncher() else openGame(url)
+    }
+
     override fun setDesktopMode(enabled: Boolean) {
-        val desktopUa = "Mozilla/5.0 (Linux; Android 9; AFTMM) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
-        webView.settings.userAgentString = if (enabled) desktopUa else defaultUserAgent
+        webView.settings.userAgentString = if (enabled) gameUserAgent() else defaultUserAgent
         webView.settings.useWideViewPort = true
         webView.settings.loadWithOverviewMode = true
     }
 
-    override fun canGoBack(): Boolean = webView.canGoBack()
+    // Back from a game always returns Home; Back on Home exits the app.
+    override fun canGoBack(): Boolean = isPlayingGame
 
     override fun goBack() {
-        if (isPlayingGame) {
-            loadLauncher()
-        } else if (webView.canGoBack()) {
-            webView.goBack()
-        }
+        if (isPlayingGame) loadLauncher()
     }
 
     override fun reload() {
@@ -245,9 +251,8 @@ class LegacyWebViewEngine(
                 val url = json.getString("url")
                 val title = json.getString("name")
                 activity.runOnUiThread {
-                    isPlayingGame = true
-                    currentGameTitle = title
-                    webView.loadUrl(url)
+                    // Only the bundled launcher may start games through the bridge.
+                    if (isLauncherUrl(webView.url ?: "")) openGame(url, title)
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "Bridge launchGame error: ${e.message}")
@@ -268,14 +273,6 @@ class LegacyWebViewEngine(
             root.put("availMemMb", memInfo.availMem / (1024 * 1024))
             root.put("cpuAbi", Build.SUPPORTED_ABIS.joinToString(", "))
             return root.toString()
-        }
-
-        @JavascriptInterface
-        fun onWebGpuFallback(reason: String) {
-            if (isPlayingGame) {
-                isPlayingGame = false
-                onEngineEvent(EngineEvent.WebGpuCompatibilityWarning(reason))
-            }
         }
     }
 
