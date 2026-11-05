@@ -9,29 +9,28 @@ android {
 
     defaultConfig {
         applicationId = "com.fzfalcon.playtv.legacy"
-        minSdk = 28
+        minSdk = 28            // Fire OS 7 = Android 9 = API 28
         targetSdk = 34
-        versionCode = 3
-        versionName = "2.0.0-legacy"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        ndk {
-            abiFilters.addAll(listOf("armeabi-v7a", "arm64-v8a"))
-        }
+        versionCode = 4
+        versionName = "3.0.0"
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+            // Debug-signed on purpose: this is a sideloaded APK, not a Play Store build.
             signingConfig = signingConfigs.getByName("debug")
         }
         debug {
             applicationIdSuffix = ".debug"
             isDebuggable = true
+        }
+    }
+
+    // The launcher UI and the game catalogue are shared with the Chromium variant.
+    sourceSets {
+        getByName("main") {
+            assets.srcDir("../shared/assets")
         }
     }
 
@@ -43,18 +42,9 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
-
-    packaging {
-        jniLibs { useLegacyPackaging = true }
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.12.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
+    // WebViewAssetLoader serves the launcher from a virtual https origin.
     implementation("androidx.webkit:webkit:1.11.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0")
 }

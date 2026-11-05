@@ -12,11 +12,18 @@ android {
         applicationId = "com.fzfalcon.playtv"
         minSdk = 29
         targetSdk = 34
-        versionCode = 3
-        versionName = "2.0.0-chromium"
+        versionCode = 4
+        versionName = "3.0.0-chromium"
 
         ndk {
             abiFilters.addAll(listOf("armeabi-v7a", "arm64-v8a"))
+        }
+    }
+
+    // Game catalogue shared with the Legacy WebView variant (single source of truth).
+    sourceSets {
+        getByName("main") {
+            assets.srcDir("../shared/assets")
         }
     }
 

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>PLAYTV</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand"><span>PLAY</span><b>TV</b></div>
+      <nav class="tabs" id="tabs" role="tablist">
+        <button class="tab active" data-tab="home">Home</button>
+        <button class="tab" data-tab="library">Games</button>
+        <button class="tab" data-tab="browse">Browse</button>
+        <button class="tab" data-tab="favorites">Favorites</button>
+        <button class="tab" data-tab="system">System</button>
+      </nav>
+      <div class="clock" id="clock">--:--</div>
+    </header>
+
+    <main class="stage" id="stage">
+      <!-- HOME -->
+      <section class="pane active" id="pane-home">
+        <div class="hero" id="hero">
+          <div class="hero-glyph" id="hero-glyph"></div>
+          <div class="hero-body">
+            <div class="hero-kicker" id="hero-kicker"></div>
+            <h1 id="hero-title">PLAYTV</h1>
+            <p id="hero-note"></p>
+            <div class="chips" id="hero-chips"></div>
+            <div class="hero-actions">
+              <button class="btn primary" id="hero-play">&#9654; Play</button>
+              <button class="btn" id="hero-fav">&#9734; Favorite</button>
+            </div>
+          </div>
+        </div>
+        <div id="rows"></div>
+      </section>
+
+      <!-- GAMES -->
+      <section class="pane" id="pane-library">
+        <div class="pane-head">
+          <h2>All games</h2>
+          <button class="chip-btn" id="filter-ready">Only show games that run here: <b id="filter-state">OFF</b></button>
+        </div>
+        <div class="grid" id="grid-library"></div>
+      </section>
+
+      <!-- BROWSE -->
+      <section class="pane" id="pane-browse">
+        <div class="pane-head">
+          <h2>Browse game sites</h2>
+          <p class="sub">Large catalogues. Cursor mode is on automatically: move with the D-pad, click with OK.</p>
+        </div>
+        <div class="grid" id="grid-browse"></div>
+      </section>
+
+      <!-- FAVORITES -->
+      <section class="pane" id="pane-favorites">
+        <div class="pane-head"><h2>Favorites</h2></div>
+        <div class="grid" id="grid-favorites"></div>
+        <p class="empty" id="empty-favorites">Nothing here yet. Focus a game and press <b>Favorite</b> on the Home tab.</p>
+      </section>
+
+      <!-- SYSTEM -->
+      <section class="pane" id="pane-system">
+        <div class="panels">
+          <div class="panel">
+            <h3>Device</h3>
+            <dl id="dl-device"></dl>
+          </div>
+          <div class="panel">
+            <h3>Graphics support</h3>
+            <dl id="dl-gpu"></dl>
+            <p class="hint" id="gpu-hint"></p>
+          </div>
+          <div class="panel">
+            <h3>In-game controls</h3>
+            <ul class="help">
+              <li><b>Hold BACK</b> or press <b>MENU</b> / <b>START</b> &mdash; in-game menu</li>
+              <li><b>BACK</b> &mdash; return Home</li>
+              <li><b>Cursor mode:</b> D-pad or left stick moves the pointer, OK / A clicks</li>
+              <li><b>Rewind / Fast-forward</b> &mdash; scroll the page</li>
+              <li><b>Gamepad &rarr; keys:</b> A Space, B Esc, X Enter, Y Tab, stick = arrows/WASD</li>
+            </ul>
+          </div>
+          <div class="panel">
+            <h3>Maintenance</h3>
+            <div class="stack">
+              <button class="btn" id="btn-rerun">Re-run graphics tests</button>
+              <button class="btn" id="btn-clear-web">Clear browser cache &amp; cookies</button>
+              <button class="btn" id="btn-reset-user">Reset favorites &amp; history</button>
+            </div>
+            <p class="hint" id="maint-status"></p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div class="toast" id="toast" role="status"></div>
+  </div>
+
+  <div class="modal" id="modal" hidden>
+    <div class="modal-card">
+      <h3 id="modal-title"></h3>
+      <p id="modal-text"></p>
+      <div class="modal-actions">
+        <button class="btn primary" id="modal-ok"></button>
+        <button class="btn" id="modal-cancel">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

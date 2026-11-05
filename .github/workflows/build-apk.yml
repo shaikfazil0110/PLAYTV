@@ -1,76 +1,74 @@
-name: Build PLAYTV Legacy Fire TV
+name: Build PLAYTV
 
 on:
   workflow_dispatch:
   push:
     branches: [main, master]
-    paths:
-      - 'app/**'
-      - 'app-chromium/**'
-      - '*.gradle.kts'
-      - 'gradle.properties'
-      - 'settings.gradle.kts'
-      - '.github/workflows/build-apk.yml'
 
 permissions:
   contents: read
 
 jobs:
-  build:
-    name: Build Legacy Fire TV APK
+  checks:
+    name: Validate catalog and launcher
     runs-on: ubuntu-latest
-    timeout-minutes: 60
     steps:
-      - name: Check out source
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      - run: python3 tools/validate_catalog.py shared/assets/games.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: node --check shared/assets/launcher/app.js
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
+  legacy:
+    name: Legacy Fire TV APK (system WebView)
+    needs: checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '17'
-
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+      - uses: android-actions/setup-android@v3
         with:
           packages: platform-tools
-
-      - name: Install Android Platforms
-        run: sdkmanager "platforms;android-34" "build-tools;34.0.0"
-
-      - name: Set up Gradle 8.8
-        uses: gradle/actions/setup-gradle@v3
+      - run: sdkmanager "platforms;android-34" "build-tools;34.0.0"
+      - uses: gradle/actions/setup-gradle@v3
         with:
           gradle-version: '8.8'
-
-      - name: Verify game catalog JSON
-        run: |
-          python3 - <<'PYJSON'
-          import json
-          for path in ('app/src/main/assets/games.json', 'app-chromium/src/main/assets/games.json'):
-              games = json.load(open(path, encoding='utf-8'))
-              assert games, f'{path} is empty'
-              urls = [g['url'] for g in games]
-              assert len(urls) == len(set(urls)), f'{path} contains duplicate game URLs'
-              print(f'{path}: {len(games)} entries verified OK')
-          PYJSON
-
-      - name: Build Legacy Fire TV APK
-        run: gradle --no-daemon :app:assembleDebug
-
-      - name: Prepare Artifacts
-        shell: bash
-        run: |
-          mkdir -p dist
-          if [ -f app/build/outputs/apk/debug/app-debug.apk ]; then
-            cp app/build/outputs/apk/debug/app-debug.apk dist/PLAYTV-Legacy-FireOS7-API28-debug.apk
-          fi
-          ls -lh dist
-
-      - name: Upload APK Artifacts
-        uses: actions/upload-artifact@v4
+      - run: gradle --no-daemon :app:assembleDebug
+      - uses: actions/upload-artifact@v4
         with:
-          name: PLAYTV-Legacy-FireTV-APK
-          path: dist/*.apk
+          name: PLAYTV-Legacy-FireTV
+          path: app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
+          retention-days: 14
+
+  chromium:
+    name: Chromium (Cefrium) APK - experimental
+    needs: checks
+    runs-on: ubuntu-latest
+    continue-on-error: true   # depends on a third-party Maven repository
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools
+      - run: sdkmanager "platforms;android-34" "build-tools;34.0.0"
+      - uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: '8.8'
+      - run: gradle --no-daemon :app-chromium:assembleDebug
+      - uses: actions/upload-artifact@v4
+        with:
+          name: PLAYTV-Chromium
+          path: app-chromium/build/outputs/apk/debug/*.apk
           if-no-files-found: error
           retention-days: 14

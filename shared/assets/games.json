@@ -6,7 +6,11 @@
     "icon": "🏎️",
     "note": "AAA-style browser project",
     "platform": "PC GAME PORTS",
-    "art": ""
+    "art": "",
+    "id": "need-for-speed-underground-2",
+    "kind": "game",
+    "requires": "webgpu",
+    "input": "keys"
   },
   {
     "name": "NFS Most Wanted (2005) Web Port",
@@ -15,7 +19,11 @@
     "icon": "🚘",
     "note": "Community web port; availability may change",
     "platform": "PC GAME PORTS",
-    "art": ""
+    "art": "",
+    "id": "nfs-most-wanted-2005-web-port",
+    "kind": "game",
+    "requires": "webgl",
+    "input": "keys"
   },
   {
     "name": "Quake III Arena — Q3JS",
@@ -24,7 +32,11 @@
     "icon": "🎯",
     "note": "Browser port",
     "platform": "PC GAME PORTS",
-    "art": ""
+    "art": "",
+    "id": "quake-iii-arena-q3js",
+    "kind": "game",
+    "requires": "webgl",
+    "input": "both"
   },
   {
     "name": "Krunker.io",
@@ -33,7 +45,11 @@
     "icon": "🔫",
     "note": "Fast browser FPS",
     "platform": "BROWSER FPS",
-    "art": ""
+    "art": "",
+    "id": "krunker-io",
+    "kind": "game",
+    "requires": "webgl",
+    "input": "both"
   },
   {
     "name": "Shell Shockers",
@@ -42,7 +58,11 @@
     "icon": "🥚",
     "note": "Multiplayer FPS",
     "platform": "BROWSER FPS",
-    "art": ""
+    "art": "",
+    "id": "shell-shockers",
+    "kind": "game",
+    "requires": "webgl",
+    "input": "both"
   },
   {
     "name": "Minecraft Classic",
@@ -51,7 +71,11 @@
     "icon": "⛏️",
     "note": "Classic browser sandbox",
     "platform": "BROWSER CLASSICS",
-    "art": ""
+    "art": "",
+    "id": "minecraft-classic",
+    "kind": "game",
+    "requires": "webgl",
+    "input": "both"
   },
   {
     "name": "Chrono Divide: Red Alert 2",
@@ -60,7 +84,11 @@
     "icon": "🪖",
     "note": "Browser-based RTS community project",
     "platform": "PC GAME PORTS",
-    "art": ""
+    "art": "",
+    "id": "chrono-divide-red-alert-2",
+    "kind": "game",
+    "requires": "webgl",
+    "input": "cursor"
   },
   {
     "name": "Agar.io",
@@ -69,7 +97,11 @@
     "icon": "🟣",
     "note": "Online arena game",
     "platform": "ARCADE & CASUAL",
-    "art": ""
+    "art": "",
+    "id": "agar-io",
+    "kind": "game",
+    "requires": "none",
+    "input": "cursor"
   },
   {
     "name": "Slither.io",
@@ -78,7 +110,11 @@
     "icon": "🐍",
     "note": "Online snake arena",
     "platform": "ARCADE & CASUAL",
-    "art": ""
+    "art": "",
+    "id": "slither-io",
+    "kind": "game",
+    "requires": "none",
+    "input": "cursor"
   },
   {
     "name": "TETR.IO",
@@ -87,7 +123,11 @@
     "icon": "🧩",
     "note": "Competitive block puzzle",
     "platform": "PUZZLE & BOARD",
-    "art": ""
+    "art": "",
+    "id": "tetr-io",
+    "kind": "game",
+    "requires": "webgl",
+    "input": "keys"
   },
   {
     "name": "2048",
@@ -96,7 +136,11 @@
     "icon": "🔢",
     "note": "Lightweight puzzle",
     "platform": "PUZZLE & BOARD",
-    "art": ""
+    "art": "",
+    "id": "2048",
+    "kind": "game",
+    "requires": "none",
+    "input": "keys"
   },
   {
     "name": "Little Alchemy 2",
@@ -105,7 +149,11 @@
     "icon": "⚗️",
     "note": "Discovery puzzle",
     "platform": "PUZZLE & BOARD",
-    "art": ""
+    "art": "",
+    "id": "little-alchemy-2",
+    "kind": "game",
+    "requires": "none",
+    "input": "cursor"
   },
   {
     "name": "Lichess",
@@ -114,7 +162,11 @@
     "icon": "♟️",
     "note": "Free online chess",
     "platform": "PUZZLE & BOARD",
-    "art": ""
+    "art": "",
+    "id": "lichess",
+    "kind": "game",
+    "requires": "none",
+    "input": "cursor"
   },
   {
     "name": "Chess.com Play",
@@ -123,7 +175,11 @@
     "icon": "♟️",
     "note": "Chess and puzzles",
     "platform": "PUZZLE & BOARD",
-    "art": ""
+    "art": "",
+    "id": "chess-com-play",
+    "kind": "game",
+    "requires": "none",
+    "input": "cursor"
   },
   {
     "name": "Gartic Phone",
@@ -132,7 +188,11 @@
     "icon": "🎨",
     "note": "Drawing telephone party game",
     "platform": "PARTY & MULTIPLAYER",
-    "art": ""
+    "art": "",
+    "id": "gartic-phone",
+    "kind": "game",
+    "requires": "none",
+    "input": "cursor"
   },
   {
     "name": "skribbl.io",
@@ -141,7 +201,11 @@
     "icon": "✏️",
     "note": "Draw and guess",
     "platform": "PARTY & MULTIPLAYER",
-    "art": ""
+    "art": "",
+    "id": "skribbl-io",
+    "kind": "game",
+    "requires": "none",
+    "input": "cursor"
   },
   {
     "name": "GeoGuessr",
@@ -150,7 +214,11 @@
     "icon": "🌍",
     "note": "Geography exploration; may require account",
     "platform": "ADVENTURE",
-    "art": ""
+    "art": "",
+    "id": "geoguessr",
+    "kind": "game",
+    "requires": "webgl",
+    "input": "cursor"
   },
   {
     "name": "Wordle",
@@ -159,7 +227,11 @@
     "icon": "🔤",
     "note": "Daily word puzzle",
     "platform": "PUZZLE & BOARD",
-    "art": ""
+    "art": "",
+    "id": "wordle",
+    "kind": "game",
+    "requires": "none",
+    "input": "both"
   },
   {
     "name": "CrazyGames",
@@ -168,7 +240,11 @@
     "icon": "🎮",
     "note": "Large browser-game catalogue",
     "platform": "HTML5 GAME HUBS",
-    "art": ""
+    "art": "",
+    "id": "crazygames",
+    "kind": "portal",
+    "requires": "none",
+    "input": "cursor"
   },
   {
     "name": "Poki",
@@ -177,7 +253,11 @@
     "icon": "🕹️",
     "note": "Casual and multiplayer games",
     "platform": "HTML5 GAME HUBS",
-    "art": ""
+    "art": "",
+    "id": "poki",
+    "kind": "portal",
+    "requires": "none",
+    "input": "cursor"
   },
   {
     "name": "Y8 Games",
@@ -186,7 +266,11 @@
     "icon": "👾",
     "note": "Arcade and browser games",
     "platform": "HTML5 GAME HUBS",
-    "art": ""
+    "art": "",
+    "id": "y8-games",
+    "kind": "portal",
+    "requires": "none",
+    "input": "cursor"
   },
   {
     "name": "itch.io — HTML5 Games",
@@ -195,7 +279,11 @@
     "icon": "🧪",
     "note": "Indie games; filter for HTML5",
     "platform": "HTML5 GAME HUBS",
-    "art": ""
+    "art": "",
+    "id": "itch-io-html5-games",
+    "kind": "portal",
+    "requires": "none",
+    "input": "cursor"
   },
   {
     "name": "Newgrounds Games",
@@ -204,7 +292,11 @@
     "icon": "💥",
     "note": "Indie and classic web games",
     "platform": "HTML5 GAME HUBS",
-    "art": ""
+    "art": "",
+    "id": "newgrounds-games",
+    "kind": "portal",
+    "requires": "none",
+    "input": "cursor"
   },
   {
     "name": "GamePix",
@@ -213,7 +305,11 @@
     "icon": "🧊",
     "note": "HTML5 games portal",
     "platform": "HTML5 GAME HUBS",
-    "art": ""
+    "art": "",
+    "id": "gamepix",
+    "kind": "portal",
+    "requires": "none",
+    "input": "cursor"
   },
   {
     "name": "Gameflare",
@@ -222,7 +318,11 @@
     "icon": "🔥",
     "note": "Browser games catalogue",
     "platform": "HTML5 GAME HUBS",
-    "art": ""
+    "art": "",
+    "id": "gameflare",
+    "kind": "portal",
+    "requires": "none",
+    "input": "cursor"
   },
   {
     "name": "Miniplay",
@@ -231,7 +331,11 @@
     "icon": "🧸",
     "note": "Casual games portal",
     "platform": "HTML5 GAME HUBS",
-    "art": ""
+    "art": "",
+    "id": "miniplay",
+    "kind": "portal",
+    "requires": "none",
+    "input": "cursor"
   },
   {
     "name": "Armor Games",
@@ -240,7 +344,11 @@
     "icon": "🛡️",
     "note": "Strategy and adventure games",
     "platform": "HTML5 GAME HUBS",
-    "art": ""
+    "art": "",
+    "id": "armor-games",
+    "kind": "portal",
+    "requires": "none",
+    "input": "cursor"
   },
   {
     "name": "Addicting Games",
@@ -249,7 +357,11 @@
     "icon": "⚡",
     "note": "Arcade and casual games",
     "platform": "HTML5 GAME HUBS",
-    "art": ""
+    "art": "",
+    "id": "addicting-games",
+    "kind": "portal",
+    "requires": "none",
+    "input": "cursor"
   },
   {
     "name": "Coolmath Games",
@@ -258,7 +370,11 @@
     "icon": "🧠",
     "note": "Puzzle and logic games",
     "platform": "HTML5 GAME HUBS",
-    "art": ""
+    "art": "",
+    "id": "coolmath-games",
+    "kind": "portal",
+    "requires": "none",
+    "input": "cursor"
   },
   {
     "name": "Kongregate",
@@ -267,7 +383,11 @@
     "icon": "🏆",
     "note": "Web-game portal; some titles may vary",
     "platform": "HTML5 GAME HUBS",
-    "art": ""
+    "art": "",
+    "id": "kongregate",
+    "kind": "portal",
+    "requires": "none",
+    "input": "cursor"
   },
   {
     "name": "GameDistribution",
@@ -276,7 +396,11 @@
     "icon": "🌐",
     "note": "HTML5 game catalogue",
     "platform": "HTML5 GAME HUBS",
-    "art": ""
+    "art": "",
+    "id": "gamedistribution",
+    "kind": "portal",
+    "requires": "none",
+    "input": "cursor"
   },
   {
     "name": "Playhop",
@@ -285,7 +409,11 @@
     "icon": "✨",
     "note": "Casual browser games",
     "platform": "HTML5 GAME HUBS",
-    "art": ""
+    "art": "",
+    "id": "playhop",
+    "kind": "portal",
+    "requires": "none",
+    "input": "cursor"
   },
   {
     "name": "Silvergames",
@@ -294,7 +422,11 @@
     "icon": "🥈",
     "note": "Browser games across genres",
     "platform": "HTML5 GAME HUBS",
-    "art": ""
+    "art": "",
+    "id": "silvergames",
+    "kind": "portal",
+    "requires": "none",
+    "input": "cursor"
   },
   {
     "name": "Miniclip",
@@ -303,7 +435,11 @@
     "icon": "🎯",
     "note": "Game publisher and portal",
     "platform": "HTML5 GAME HUBS",
-    "art": ""
+    "art": "",
+    "id": "miniclip",
+    "kind": "portal",
+    "requires": "none",
+    "input": "cursor"
   },
   {
     "name": "Pokémon Showdown",
@@ -312,7 +448,11 @@
     "icon": "⚔️",
     "note": "Online battle simulator",
     "platform": "PUZZLE & BOARD",
-    "art": ""
+    "art": "",
+    "id": "pok-mon-showdown",
+    "kind": "game",
+    "requires": "none",
+    "input": "cursor"
   },
   {
     "name": "DOS.Zone — Retro Games",
@@ -321,7 +461,11 @@
     "icon": "🕹️",
     "note": "Retro DOS games in a browser; individual games may vary",
     "platform": "RETRO / DOS HUBS",
-    "art": ""
+    "art": "",
+    "id": "dos-zone-retro-games",
+    "kind": "portal",
+    "requires": "none",
+    "input": "cursor"
   },
   {
     "name": "JS-DOS",
@@ -330,7 +474,11 @@
     "icon": "💾",
     "note": "DOSBox-based browser gaming technology and demos",
     "platform": "RETRO / DOS HUBS",
-    "art": ""
+    "art": "",
+    "id": "js-dos",
+    "kind": "portal",
+    "requires": "none",
+    "input": "cursor"
   },
   {
     "name": "OpenLara — Tomb Raider Engine",
@@ -339,7 +487,11 @@
     "icon": "🗿",
     "note": "Open-source Tomb Raider engine demo; content availability depends on the demo or game data supplied",
     "platform": "PS1 / PC WEB PORTS",
-    "art": ""
+    "art": "",
+    "id": "openlara-tomb-raider-engine",
+    "kind": "game",
+    "requires": "webgl",
+    "input": "keys"
   },
   {
     "name": "QuakeJS",
@@ -348,7 +500,11 @@
     "icon": "🎯",
     "note": "Community browser port; server and browser compatibility may vary",
     "platform": "PC GAME PORTS",
-    "art": ""
+    "art": "",
+    "id": "quakejs",
+    "kind": "game",
+    "requires": "webgl",
+    "input": "both"
   },
   {
     "name": "Internet Archive — Classic Games",
@@ -357,7 +513,11 @@
     "icon": "🕹️",
     "note": "Browser emulation for supported archived software; availability varies",
     "platform": "RETRO / DOS",
-    "art": ""
+    "art": "",
+    "id": "internet-archive-classic-games",
+    "kind": "portal",
+    "requires": "none",
+    "input": "cursor"
   },
   {
     "name": "itch.io — Racing Games",
@@ -366,7 +526,11 @@
     "icon": "🏁",
     "note": "HTML5 racing games; individual game controls and compatibility vary",
     "platform": "HTML5 GAME HUBS",
-    "art": ""
+    "art": "",
+    "id": "itch-io-racing-games",
+    "kind": "portal",
+    "requires": "none",
+    "input": "cursor"
   },
   {
     "name": "itch.io — Platform Games",
@@ -375,7 +539,11 @@
     "icon": "🧗",
     "note": "HTML5 platform games directory",
     "platform": "HTML5 GAME HUBS",
-    "art": ""
+    "art": "",
+    "id": "itch-io-platform-games",
+    "kind": "portal",
+    "requires": "none",
+    "input": "cursor"
   },
   {
     "name": "itch.io — Action Games",
@@ -384,7 +552,11 @@
     "icon": "⚔️",
     "note": "HTML5 action games directory",
     "platform": "HTML5 GAME HUBS",
-    "art": ""
+    "art": "",
+    "id": "itch-io-action-games",
+    "kind": "portal",
+    "requires": "none",
+    "input": "cursor"
   },
   {
     "name": "itch.io — Multiplayer Games",
@@ -393,7 +565,11 @@
     "icon": "👾",
     "note": "HTML5 multiplayer games directory",
     "platform": "HTML5 GAME HUBS",
-    "art": ""
+    "art": "",
+    "id": "itch-io-multiplayer-games",
+    "kind": "portal",
+    "requires": "none",
+    "input": "cursor"
   },
   {
     "name": "itch.io — 3D Games",
@@ -402,7 +578,11 @@
     "icon": "🧊",
     "note": "HTML5 3D game directory; device requirements vary",
     "platform": "HTML5 GAME HUBS",
-    "art": ""
+    "art": "",
+    "id": "itch-io-3d-games",
+    "kind": "portal",
+    "requires": "webgl",
+    "input": "cursor"
   },
   {
     "name": "CrazyGames — Racing",
@@ -411,7 +591,11 @@
     "icon": "🏎️",
     "note": "Racing game directory; some games may require touch or mouse",
     "platform": "HTML5 GAME HUBS",
-    "art": ""
+    "art": "",
+    "id": "crazygames-racing",
+    "kind": "portal",
+    "requires": "none",
+    "input": "cursor"
   },
   {
     "name": "CrazyGames — Action",
@@ -420,7 +604,11 @@
     "icon": "💥",
     "note": "Action game directory",
     "platform": "HTML5 GAME HUBS",
-    "art": ""
+    "art": "",
+    "id": "crazygames-action",
+    "kind": "portal",
+    "requires": "none",
+    "input": "cursor"
   },
   {
     "name": "Poki — Racing",
@@ -429,7 +617,11 @@
     "icon": "🏎️",
     "note": "Racing game directory",
     "platform": "HTML5 GAME HUBS",
-    "art": ""
+    "art": "",
+    "id": "poki-racing",
+    "kind": "portal",
+    "requires": "none",
+    "input": "cursor"
   },
   {
     "name": "Poki — Adventure",
@@ -438,7 +630,11 @@
     "icon": "🧭",
     "note": "Adventure game directory",
     "platform": "HTML5 GAME HUBS",
-    "art": ""
+    "art": "",
+    "id": "poki-adventure",
+    "kind": "portal",
+    "requires": "none",
+    "input": "cursor"
   },
   {
     "name": "GamePix — Racing",
@@ -447,7 +643,11 @@
     "icon": "🚗",
     "note": "Browser game portal; category routing may vary",
     "platform": "HTML5 GAME HUBS",
-    "art": ""
+    "art": "",
+    "id": "gamepix-racing",
+    "kind": "portal",
+    "requires": "none",
+    "input": "cursor"
   },
   {
     "name": "Miniplay — Action Games",
@@ -456,7 +656,11 @@
     "icon": "⚔️",
     "note": "Browser game directory",
     "platform": "HTML5 GAME HUBS",
-    "art": ""
+    "art": "",
+    "id": "miniplay-action-games",
+    "kind": "portal",
+    "requires": "none",
+    "input": "cursor"
   },
   {
     "name": "Y8 — Racing Games",
@@ -465,7 +669,11 @@
     "icon": "🏁",
     "note": "Browser game directory",
     "platform": "HTML5 GAME HUBS",
-    "art": ""
+    "art": "",
+    "id": "y8-racing-games",
+    "kind": "portal",
+    "requires": "none",
+    "input": "cursor"
   },
   {
     "name": "Armor Games — Strategy",
@@ -474,7 +682,11 @@
     "icon": "♟️",
     "note": "Strategy game directory",
     "platform": "HTML5 GAME HUBS",
-    "art": ""
+    "art": "",
+    "id": "armor-games-strategy",
+    "kind": "portal",
+    "requires": "none",
+    "input": "cursor"
   },
   {
     "name": "Coolmath Games — Skill",
@@ -483,7 +695,11 @@
     "icon": "🎮",
     "note": "Skill and arcade game directory",
     "platform": "HTML5 GAME HUBS",
-    "art": ""
+    "art": "",
+    "id": "coolmath-games-skill",
+    "kind": "portal",
+    "requires": "none",
+    "input": "cursor"
   },
   {
     "name": "Board Game Arena",
@@ -492,7 +708,11 @@
     "icon": "🎲",
     "note": "Online board games; account may be required for some features",
     "platform": "PUZZLE & BOARD",
-    "art": ""
+    "art": "",
+    "id": "board-game-arena",
+    "kind": "game",
+    "requires": "none",
+    "input": "cursor"
   },
   {
     "name": "Chess.org — Browser Chess",
@@ -501,7 +721,11 @@
     "icon": "♟️",
     "note": "Browser chess platform",
     "platform": "PUZZLE & BOARD",
-    "art": ""
+    "art": "",
+    "id": "chess-org-browser-chess",
+    "kind": "game",
+    "requires": "none",
+    "input": "cursor"
   },
   {
     "name": "Neal.fun — Interactive Games",
@@ -510,7 +734,11 @@
     "icon": "✨",
     "note": "Collection of interactive browser experiences",
     "platform": "ARCADE & CASUAL",
-    "art": ""
+    "art": "",
+    "id": "neal-fun-interactive-games",
+    "kind": "portal",
+    "requires": "none",
+    "input": "cursor"
   },
   {
     "name": "Word Games — Sporcle",
@@ -519,6 +747,10 @@
     "icon": "🧠",
     "note": "Trivia and quiz games; some content uses mouse/touch",
     "platform": "PUZZLE & BOARD",
-    "art": ""
+    "art": "",
+    "id": "word-games-sporcle",
+    "kind": "game",
+    "requires": "none",
+    "input": "cursor"
   }
 ]
